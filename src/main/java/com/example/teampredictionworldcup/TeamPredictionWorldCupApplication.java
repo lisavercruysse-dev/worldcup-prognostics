@@ -14,6 +14,6 @@ public class TeamPredictionWorldCupApplication implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("team-overview");
+        registry.addRedirectViewController("/", "/home");
     }
 }

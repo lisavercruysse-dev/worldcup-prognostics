@@ -18,11 +18,11 @@ public class Member {
 
     @Setter
     @ManyToOne
-    @JoinColumn(name = "teamName")
+    @JoinColumn(name = "team_name")
     private Team team;
 
     @OneToOne(mappedBy = "owner")
-    private Team owningTeam;
+    private Team ownedTeam;
 
     private int score;
 

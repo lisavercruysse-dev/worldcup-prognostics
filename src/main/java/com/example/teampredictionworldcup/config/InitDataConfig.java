@@ -21,6 +21,7 @@ public class InitDataConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+
         Member jan = new Member("Jan");
         Member piet  = new Member("Piet");
         Member hannah = new Member("Hannah");

@@ -6,7 +6,22 @@
 </head>
 <body>
 
-<h3>Team</h3>
-
+    <h1 th:text="${team.teamName}"></h1>
+    <h3 th:text="'Totale score: ' + ${team.score}"></h3>
+    <h3>Members</h3>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>score</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="member : ${team.members}">
+            <td th:style="${member.name == team.owner} ? 'color: blue; font-weight: bold;' : ''" th:text="${member.name}"></td>
+            <td th:text="${member.score}"></td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>
