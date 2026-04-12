@@ -17,12 +17,14 @@ import java.util.List;
 public class Team {
 
     @Id
+    @Column(name = "team_name")
     String teamName;
 
+    @Column(name = "invite_code")
     private String inviteCode;
 
     @OneToOne
-    @JoinColumn(name = "ownerId")
+    @JoinColumn(name = "owner_id")
     private Member owner;
 
     @OneToMany(mappedBy="team", cascade = CascadeType.ALL)

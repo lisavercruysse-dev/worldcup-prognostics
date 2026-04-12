@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+
+    <h1>Leaderboard</h1>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="team : ${teams}" >
+                <td th:text="${team.teamName}"></td>
+                <td th:text="${team.score}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
