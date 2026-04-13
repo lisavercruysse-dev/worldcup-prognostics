@@ -3,6 +3,9 @@ package com.example.teampredictionworldcup.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,8 +19,14 @@ public class Stadium {
     @Id
     private int stadiumCode;
 
+    @NotEmpty
+    @Size(min = 4)
+    @Pattern(regexp = "^[A-Za-z]+( [A-Za-z]+)*$")
     private String name;
 
+    @NotEmpty
+    @Size(min = 4)
+    @Pattern(regexp = "^[a-zA-Z]+")
     private String city;
 
 }

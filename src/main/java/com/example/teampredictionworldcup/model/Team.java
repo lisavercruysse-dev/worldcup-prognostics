@@ -1,6 +1,7 @@
 package com.example.teampredictionworldcup.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,6 +19,9 @@ public class Team {
 
     @Id
     @Column(name = "team_name")
+    @NotBlank
+    @Size(min = 4)
+    @Pattern(regexp = "^[A-Za-z]+$")
     String teamName;
 
     @Column(name = "invite_code")
@@ -25,6 +29,7 @@ public class Team {
 
     @OneToOne
     @JoinColumn(name = "owner_id")
+    @NotNull
     private Member owner;
 
     @OneToMany(mappedBy="team", cascade = CascadeType.ALL)
@@ -37,7 +42,6 @@ public class Team {
         this.owner = owner;
         owner.setTeam(this);
         addMember(owner);
-        setInviteCode();
         score = 0;
     }
 
