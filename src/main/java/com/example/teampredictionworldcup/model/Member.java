@@ -1,6 +1,9 @@
 package com.example.teampredictionworldcup.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity
@@ -14,6 +17,9 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank
+    @Size(min = 2)
+    @Pattern(regexp = "^[a-zA-Z]+")
     private String name;
 
     @Setter
@@ -28,6 +34,7 @@ public class Member {
 
     public Member(String name) {
         this.name = name;
+        this.score = 0;
     }
 
 }
