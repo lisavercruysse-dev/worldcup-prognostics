@@ -8,11 +8,13 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "stadiums")
 @EqualsAndHashCode(of = "id")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Stadium {
 
@@ -28,5 +30,11 @@ public class Stadium {
     @Size(min = 4)
     @Pattern(regexp = "^[a-zA-Z]+")
     private String city;
+
+    public Stadium(int stadiumCode, String name, String city) {
+        this.stadiumCode = stadiumCode;
+        this.name = name;
+        this.city = city;
+    }
 
 }

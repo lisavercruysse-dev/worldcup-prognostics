@@ -6,9 +6,27 @@
 </head>
 <body>
 
-<h1>FIFA World Cup 2026 Prognostics</h1>
-<a th:href="@{/teams/{team}(team=${member.team})}">My Team</a> <br/>
-<a th:href="@{/teams/leaderboard}">Leaderboard</a>
+    <h1>FIFA World Cup 2026 Prognostics</h1>
+    <a th:href="@{/teams/{team}(team=${member.team})}">My Team</a> <br/>
+    <a th:href="@{/teams/leaderboard}">Leaderboard</a>
 
+    <table  border="1" cellpadding="8" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Team A</th>
+                <th>Team B</th>
+                <th>Date and Time</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="match : ${matches}">
+                <td th:text="${match.countryA}"></td>
+                <td th:text="${match.countryB}"></td>
+                <td th:text="${{match.date}}"></td>
+                <td th:text="|${match.stadium.name}, ${match.stadium.city}|"></td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>
