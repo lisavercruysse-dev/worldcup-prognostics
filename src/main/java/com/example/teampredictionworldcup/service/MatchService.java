@@ -20,7 +20,15 @@ public class MatchService {
     public List<MatchDTO> getAllMatches(){
         List<Match> matches = matchRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime"));
         return matches.stream().map(m ->
-                new MatchDTO(m.getDateTime(), new StadiumDTO(m.getStadium().getName(),
+                new MatchDTO(m.getId(), m.getDateTime(), new StadiumDTO(m.getStadium().getName(),
                         m.getStadium().getCity()), m.getCountryA(), m.getCountryB())).toList();
+    }
+
+    public MatchDTO getMatchById(int id){
+        Match match = matchRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Match not found with id: " + id));
+        return new MatchDTO(match.getId(), match.getDateTime(),
+                    new StadiumDTO(match.getStadium().getName(), match.getStadium().getCity()),
+                    match.getCountryA(), match.getCountryB());
     }
 }

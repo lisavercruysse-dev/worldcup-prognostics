@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "members")
 @EqualsAndHashCode(of = "id")
@@ -31,6 +34,9 @@ public class Member {
     private Team ownedTeam;
 
     private int score;
+
+    @OneToMany(mappedBy = "member")
+    private List<Prognostic> prognostics = new ArrayList<>();
 
     public Member(String name) {
         this.name = name;

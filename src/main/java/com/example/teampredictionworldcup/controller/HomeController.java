@@ -19,7 +19,7 @@ public class HomeController {
 
     @GetMapping()
     public String prognosticsWorldCup(Model model) {
-        model.addAttribute("member", memberService.getMemberById(7));
+        model.addAttribute("member", memberService.getMemberById(1));
         model.addAttribute("matches", matchService.getAllMatches());
         return "home";
     }
