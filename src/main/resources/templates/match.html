@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+
+<h1 th:text="'Teams: ' + ${match.countryA} + ' vs ' + ${match.countryB}"></h1>
+<p th:text="'Location: ' + ${match.stadium.name} + ', ' + ${match.stadium.city}"></p>
+<p th:text="'Date: ' + ${#temporals.format(match.date, 'dd-MM-yyyy')}"></p>
+<p th:text="'Time: ' + ${#temporals.format(match.date, 'HH:mm')}"></p>
+
+<h2>Final Score</h2>
+<p>To Be Implemented</p>
+
+<h2>Your Prognostic</h2>
+<div th:if="${prognostic == null}">
+    <p>No prognostic yet for this match.</p>
+</div>
+<div th:if="${prognostic != null}">
+    <p th:text="'Goals ' + ${match.countryA} + ': ' + ${prognostic.goalsTeamA}"></p>
+    <p th:text="'Goals ' + ${match.countryB} + ': ' + ${prognostic.goalsTeamB}"></p>
+</div>
+
+</body>
+</html>
