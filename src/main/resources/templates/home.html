@@ -13,7 +13,7 @@
         My Team
     </a>
     <a th:if="${member.team != null}"
-       th:href="@{/teams/{memberId}/{teamName}(memberId=${member.id}, teamName=${member.team.teamName})}">
+       th:href="@{/teams/{memberId}/{teamName}(memberId=${member.id}, teamName=${member.team})}">
         My Team
     </a> <br/>
     <a th:href="@{/teams/leaderboard}">Leaderboard</a>

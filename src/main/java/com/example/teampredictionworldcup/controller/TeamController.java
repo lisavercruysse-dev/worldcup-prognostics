@@ -1,5 +1,6 @@
 package com.example.teampredictionworldcup.controller;
 
+import com.example.teampredictionworldcup.dto.response.JoinTeamInputDTO;
 import com.example.teampredictionworldcup.dto.response.TeamInputDTO;
 import com.example.teampredictionworldcup.service.MemberService;
 import com.example.teampredictionworldcup.service.TeamService;
@@ -44,6 +45,13 @@ public class TeamController {
         return "createTeamForm";
     }
 
+    @GetMapping("/{memberId}/join")
+    public String showJoinTeamForm(@PathVariable int memberId, Model model) {
+        model.addAttribute("member", memberService.getMemberById(memberId));
+        model.addAttribute("inputDTO", new JoinTeamInputDTO(null, null, memberId));
+        return "joinTeamForm";
+    }
+
     @PostMapping("/{memberId}/{teamName}/invite")
     public String generateInviteCode(@PathVariable String teamName, @PathVariable int memberId) {
         teamService.genereateInviteCode(teamName);
@@ -54,5 +62,11 @@ public class TeamController {
     public String makeTeam(TeamInputDTO teamInputDTO) {
         teamService.save(teamInputDTO);
         return "redirect:/teams/" + teamInputDTO.ownerId() + "/" + teamInputDTO.teamName();
+    }
+
+    @PostMapping("/members")
+    public String addMember(JoinTeamInputDTO joinTeamInputDTO) {
+        teamService.addMember(joinTeamInputDTO);
+        return "redirect:/teams/" + joinTeamInputDTO.memberId() + "/" + joinTeamInputDTO.teamName();
     }
 }

@@ -1,8 +1,6 @@
 package com.example.teampredictionworldcup.service;
 
-import com.example.teampredictionworldcup.dto.response.MemberMinimalDTO;
-import com.example.teampredictionworldcup.dto.response.TeamInputDTO;
-import com.example.teampredictionworldcup.dto.response.TeamMinimalDTO;
+import com.example.teampredictionworldcup.dto.response.*;
 import com.example.teampredictionworldcup.model.Member;
 import com.example.teampredictionworldcup.model.Team;
 import com.example.teampredictionworldcup.repository.MemberRepository;
@@ -10,7 +8,6 @@ import com.example.teampredictionworldcup.repository.TeamRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.example.teampredictionworldcup.dto.response.TeamOverviewDTO;
 
 import java.util.List;
 
@@ -20,6 +17,7 @@ import java.util.List;
 public class TeamService {
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     public List<TeamMinimalDTO> getAllTeams() {
         List<Team> lijstTeams = teamRepository.findAll();
@@ -57,6 +55,17 @@ public class TeamService {
         if (member != null) {
             Team team = new Team(teamInputDTO.teamName(), member);
             teamRepository.save(team);
+        }
+    }
+
+    public void addMember(JoinTeamInputDTO joinTeamInputDTO) {
+        Member member = memberRepository.findById(joinTeamInputDTO.memberId()).orElse(null);
+        Team team = teamRepository.findById(joinTeamInputDTO.teamName()).orElse(null);
+        if (member != null && team != null) {
+            if (joinTeamInputDTO.inviteCode().equals(team.getInviteCode())) {
+                team.addMember(member);
+                teamRepository.save(team);
+            }
         }
     }
 }

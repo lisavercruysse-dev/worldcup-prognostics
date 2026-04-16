@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Join Team</title>
+</head>
+<body>
+<h1>Join Team</h1>
+    <form th:action="@{/teams/members}" th:object="${inputDTO}" method="post">
+
+        <label>Team Name</label>
+        <input type="text" th:field="*{teamName}"/>
+
+        <label>Invite Code</label>
+        <input type="text" th:field="*{inviteCode}"/>
+
+        <input type="hidden" th:field="*{memberId}"/>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
