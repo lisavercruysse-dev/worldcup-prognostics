@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PrognosticForm</title>
+</head>
+<body>
+<h1>Prognostics form</h1>
+<form th:action="@{/prognostics}" th:object="${inputDTO}" method="post">
+
+    <label>Goals Team A</label>
+    <input type="number" th:field="*{goalsTeamA}" min="0" required/>
+    <br/>
+    <label>Goals Team A</label>
+    <input type="number" th:field="*{goalsTeamB}" min="0" required/>
+
+    <input type="hidden" th:field="*{matchId}"/>
+    <input type="hidden" th:field="*{memberId}" />
+
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>
