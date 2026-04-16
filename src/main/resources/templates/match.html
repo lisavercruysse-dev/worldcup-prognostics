@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Match</title>
 </head>
 <body>
 
@@ -17,10 +17,16 @@
 <h2>Your Prognostic</h2>
 <div th:if="${prognostic == null}">
     <p>No prognostic yet for this match.</p>
+    <a th:href="@{/prognostics/form/{matchId}/{memberId}(matchId=${match.id}, memberId=${memberId})}">
+        <button>
+            Add Prognostic
+        </button>
+    </a>
 </div>
 <div th:if="${prognostic != null}">
     <p th:text="'Goals ' + ${match.countryA} + ': ' + ${prognostic.goalsTeamA}"></p>
     <p th:text="'Goals ' + ${match.countryB} + ': ' + ${prognostic.goalsTeamB}"></p>
+
 </div>
 
 </body>
