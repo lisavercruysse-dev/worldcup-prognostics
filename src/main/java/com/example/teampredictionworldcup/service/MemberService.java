@@ -16,8 +16,10 @@ public class MemberService {
 
     public MemberDTO getMemberById(int id) {
         Member member = memberRepository.findById(id).orElse(null);
+
         if (member != null) {
-            return new MemberDTO(member.getId(), member.getName(), member.getTeam().getTeamName(), member.getScore());
+            String teamName = member.getTeam() != null ? member.getTeam().getTeamName() : null;
+            return new MemberDTO(member.getId(), member.getName(),teamName, member.getScore());
         }
         return null;
     }

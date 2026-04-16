@@ -8,7 +8,14 @@
 
     <h1>FIFA World Cup 2026 Prognostics</h1>
     <h2 th:text="'Logged in user: ' + ${member.name}"></h2>
-    <a th:href="@{/teams/{team}(team=${member.team})}">My Team</a> <br/>
+    <a th:if="${member.team == null}"
+       th:href="@{/teams/{memberId}(memberId=${member.id})}">
+        My Team
+    </a>
+    <a th:if="${member.team != null}"
+       th:href="@{/teams/{memberId}/{teamName}(memberId=${member.id}, teamName=${member.team.teamName})}">
+        My Team
+    </a> <br/>
     <a th:href="@{/teams/leaderboard}">Leaderboard</a>
 
     <table  border="1" cellpadding="8" cellspacing="0">

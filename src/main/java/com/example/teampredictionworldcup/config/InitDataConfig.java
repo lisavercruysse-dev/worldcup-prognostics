@@ -40,6 +40,8 @@ public class InitDataConfig implements CommandLineRunner {
         Member pieter = new Member("Pieter");
         Member katrien = new Member("Katrien");
 
+        Member bert = new Member("Bert");
+
         memberRepository.saveAll(List.of(jan, piet, hannah, sam, lilly, tom, luca, pieter, katrien));
 
         Team teamA = new Team("TeamA", jan);
@@ -57,7 +59,7 @@ public class InitDataConfig implements CommandLineRunner {
         teamC.addMember(pieter);
         teamC.addMember(katrien);
 
-        memberRepository.saveAll(List.of(sam, lilly, tom, luca, pieter, katrien));
+        memberRepository.saveAll(List.of(sam, lilly, tom, luca, pieter, katrien, bert));
 
         Stadium s1 = new Stadium(1001, "National Arena", "London");
         Stadium s2 = new Stadium(1002, "Olympic Stadium", "Paris");

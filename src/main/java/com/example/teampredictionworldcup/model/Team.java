@@ -45,7 +45,7 @@ public class Team {
         score = 0;
     }
 
-    private void setInviteCode () {
+    public void setInviteCode () {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 9; i++) {
