@@ -6,22 +6,43 @@
 </head>
 <body>
 
-    <h1 th:text="${team.teamName}"></h1>
-    <h3 th:text="'Totale score: ' + ${team.score}"></h3>
-    <h3>Members</h3>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
+    <div th:if="${member.team != null}">
+        <h1 th:text="${team.teamName}"></h1>
+        <a th:href="@{/home}">Home</a>
+        <h3 th:text="'Totale score: ' + ${team.score}"></h3>
+        <h3>Members</h3>
+        <table border="1" cellpadding="8" cellspacing="0">
+            <thead>
             <tr>
                 <th>name</th>
                 <th>score</th>
             </tr>
-        </thead>
-        <tbody>
-        <tr th:each="member : ${team.members}">
-            <td th:style="${member.name == team.owner} ? 'color: blue; font-weight: bold;' : ''" th:text="${member.name}"></td>
-            <td th:text="${member.score}"></td>
-        </tr>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <tr th:each="member : ${team.members}">
+                <td th:style="${member.name == team.owner} ? 'color: blue; font-weight: bold;' : ''" th:text="${member.name}"></td>
+                <td th:text="${member.score}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${member.name == team.owner && team.inviteCode == null}">
+            <form th:action="@{/teams/{memberId}/{team}/invite(memberId=${member.id}, team=${team.teamName})}" method="post">
+                <button type="submit">Generate invitecode</button>
+            </form>
+        </div>
+        <div th:if="${team.inviteCode != null}">
+            <p th:text="${team.inviteCode}"></p>
+        </div>
+    </div>
+    <div th:if="${member.team == null}">
+        <p>You have no team yet! Make your own or join a friends team!</p>
+        <a th:href="@{/teams/{memberId}/create(memberId=${member.id})}">
+            Create Team
+        </a> <br/>
+        <a th:href="@{/teams/{memberId}/join(memberId=${member.id})}">
+            Join Team
+        </a>
+    </div>
 </body>
 </html>

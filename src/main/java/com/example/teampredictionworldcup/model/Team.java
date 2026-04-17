@@ -19,9 +19,6 @@ public class Team {
 
     @Id
     @Column(name = "team_name")
-    @NotBlank
-    @Size(min = 4)
-    @Pattern(regexp = "^[A-Za-z]+$")
     String teamName;
 
     @Column(name = "invite_code")
@@ -29,7 +26,6 @@ public class Team {
 
     @OneToOne
     @JoinColumn(name = "owner_id")
-    @NotNull
     private Member owner;
 
     @OneToMany(mappedBy="team", cascade = CascadeType.ALL)
@@ -45,7 +41,7 @@ public class Team {
         score = 0;
     }
 
-    private void setInviteCode () {
+    public void setInviteCode () {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 9; i++) {

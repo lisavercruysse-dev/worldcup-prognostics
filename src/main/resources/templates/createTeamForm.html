@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create team</title>
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+</head>
+<body>
+<h1>Team form</h1>
+<form th:action="@{/teams}" th:object="${teamInputDTO}" method="post">
+
+    <p>
+        <label>Team Name</label>
+        <input type="text" th:field="*{teamName}"/> <br/>
+        <span th:if="${#fields.hasErrors('teamName')}" th:errorclass="error" th:errors="*{teamName}"></span>
+    </p>
+
+    <input type="hidden" th:field="*{ownerId}"/>
+
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>
