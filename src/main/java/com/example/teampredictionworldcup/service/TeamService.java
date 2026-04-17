@@ -62,10 +62,8 @@ public class TeamService {
         Member member = memberRepository.findById(joinTeamInputDTO.memberId()).orElse(null);
         Team team = teamRepository.findById(joinTeamInputDTO.teamName()).orElse(null);
         if (member != null && team != null) {
-            if (joinTeamInputDTO.inviteCode().equals(team.getInviteCode())) {
-                team.addMember(member);
-                teamRepository.save(team);
-            }
+            team.addMember(member);
+            teamRepository.save(team);
         }
     }
 }

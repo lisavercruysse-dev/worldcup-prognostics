@@ -3,20 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Join Team</title>
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
 </head>
 <body>
-<h1>Join Team</h1>
-    <form th:action="@{/teams/members}" th:object="${inputDTO}" method="post">
+    <h1>Join Team</h1>
+    <form th:action="@{/teams/members}" th:object="${joinTeamInputDTO}" method="post">
+        <p>
+            <label>Team Name</label>
+            <input type="text" th:field="*{teamName}"/>
+            <span th:if="${#fields.hasErrors('teamName')}" th:errorclass="error" th:errors="*{teamName}"></span>
+        </p>
 
-        <label>Team Name</label>
-        <input type="text" th:field="*{teamName}"/>
+        <p>
+            <label>Invite Code</label>
+            <input type="text" th:field="*{inviteCode}"/>
+            <span th:if="${#fields.hasErrors('inviteCode')}" th:errorclass="error" th:errors="*{inviteCode}"></span>
+        </p>
 
-        <label>Invite Code</label>
-        <input type="text" th:field="*{inviteCode}"/>
+            <input type="hidden" th:field="*{memberId}"/>
 
-        <input type="hidden" th:field="*{memberId}"/>
-
-        <button type="submit">Submit</button>
+            <button type="submit">Submit</button>
     </form>
 </body>
 </html>

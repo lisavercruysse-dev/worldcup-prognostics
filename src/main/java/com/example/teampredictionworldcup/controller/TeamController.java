@@ -4,9 +4,12 @@ import com.example.teampredictionworldcup.dto.response.JoinTeamInputDTO;
 import com.example.teampredictionworldcup.dto.response.TeamInputDTO;
 import com.example.teampredictionworldcup.service.MemberService;
 import com.example.teampredictionworldcup.service.TeamService;
+import com.example.teampredictionworldcup.validator.JoinTeamValidator;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,7 +51,7 @@ public class TeamController {
     @GetMapping("/{memberId}/join")
     public String showJoinTeamForm(@PathVariable int memberId, Model model) {
         model.addAttribute("member", memberService.getMemberById(memberId));
-        model.addAttribute("inputDTO", new JoinTeamInputDTO(null, null, memberId));
+        model.addAttribute("joinTeamInputDTO", new JoinTeamInputDTO(null, null, memberId));
         return "joinTeamForm";
     }
 
@@ -65,7 +68,11 @@ public class TeamController {
     }
 
     @PostMapping("/members")
-    public String addMember(JoinTeamInputDTO joinTeamInputDTO) {
+    public String addMember(@Valid JoinTeamInputDTO joinTeamInputDTO, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "joinTeamForm";
+        }
+
         teamService.addMember(joinTeamInputDTO);
         return "redirect:/teams/" + joinTeamInputDTO.memberId() + "/" + joinTeamInputDTO.teamName();
     }
