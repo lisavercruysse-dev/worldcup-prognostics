@@ -10,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -44,7 +41,7 @@ public class TeamController {
 
     @GetMapping("/{memberId}/create")
     public String showCreateTeamForm(@PathVariable int memberId, Model model) {
-        model.addAttribute("inputDTO", new TeamInputDTO(null, memberId));
+        model.addAttribute("teamInputDTO", new TeamInputDTO(null, memberId));
         return "createTeamForm";
     }
 
@@ -62,7 +59,11 @@ public class TeamController {
     }
 
     @PostMapping
-    public String makeTeam(TeamInputDTO teamInputDTO) {
+    public String makeTeam(@Valid TeamInputDTO teamInputDTO, BindingResult bindingResult, Model model) {
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("teamInputDTO", teamInputDTO);
+            return "createTeamForm";
+        }
         teamService.save(teamInputDTO);
         return "redirect:/teams/" + teamInputDTO.ownerId() + "/" + teamInputDTO.teamName();
     }

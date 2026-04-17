@@ -19,9 +19,6 @@ public class Team {
 
     @Id
     @Column(name = "team_name")
-    @NotBlank
-    @Size(min = 4)
-    @Pattern(regexp = "^[A-Za-z]+$")
     String teamName;
 
     @Column(name = "invite_code")
@@ -29,7 +26,6 @@ public class Team {
 
     @OneToOne
     @JoinColumn(name = "owner_id")
-    @NotNull
     private Member owner;
 
     @OneToMany(mappedBy="team", cascade = CascadeType.ALL)
