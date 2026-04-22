@@ -31,4 +31,5 @@ public class MatchService {
                     new StadiumDTO(match.getStadium().getName(), match.getStadium().getCity()),
                     match.getCountryA(), match.getCountryB());
     }
+
 }

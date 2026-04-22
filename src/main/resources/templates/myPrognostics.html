@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Prognostics</title>
+</head>
+<body>
+
+    <h1>My Prognostics</h1>
+
+    <div th:each="p : ${prognostics}">
+        <h3 th:text="|Prognostics: ${p.match.countryA} VS. ${p.match.countryB}|"></h3>
+        <table border="1" cellpadding="8" cellspacing="0">
+            <thead>
+            <tr>
+                <th></th>
+                <th th:text="${p.match.countryA}"></th>
+                <th th:text="${p.match.countryB}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Goals</td>
+                <td th:text="${p.goalsTeamA}"></td>
+                <td th:text="${p.goalsTeamB}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

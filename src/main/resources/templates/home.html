@@ -16,7 +16,8 @@
        th:href="@{/teams/{memberId}/{teamName}(memberId=${member.id}, teamName=${member.team})}">
         My Team
     </a> <br/>
-    <a th:href="@{/teams/leaderboard}">Leaderboard</a>
+    <a th:href="@{/teams/leaderboard}">Leaderboard</a><br/>
+    <a th:href="@{/prognostics/user/{memberId}(memberId=${member.id})}">My Prognostics</a>
 
     <table  border="1" cellpadding="8" cellspacing="0">
         <thead>
