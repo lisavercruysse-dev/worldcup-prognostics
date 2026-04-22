@@ -3,6 +3,7 @@ package com.example.teampredictionworldcup.controller;
 import com.example.teampredictionworldcup.dto.response.MatchMinimalDTO;
 import com.example.teampredictionworldcup.dto.response.PrognosticDTO;
 import com.example.teampredictionworldcup.dto.response.PrognosticInputDTO;
+import com.example.teampredictionworldcup.service.MatchService;
 import com.example.teampredictionworldcup.service.PrognosticService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,12 @@ public class PrognosticController {
     public String showForm(@PathVariable int matchId, @PathVariable int memberId, Model model) {
         model.addAttribute("inputDTO", new PrognosticInputDTO(null, null, matchId, memberId));
         return "prognosticForm";
+    }
+
+    @GetMapping("/user/{userId}")
+    public String showPrognosticsForUser(@PathVariable int userId, Model model) {
+        model.addAttribute("prognostics", prognosticService.getByUserId(userId));
+        return "myPrognostics";
     }
 
     @PostMapping

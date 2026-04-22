@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor()
@@ -38,6 +40,12 @@ public class PrognosticService {
                     prognostic.getMember().getName(), prognostic.getGoalsTeamA(), prognostic.getGoalsTeamB());
         }
         return null;
+    }
+
+    public List<PrognosticDTO> getByUserId(int userId) {
+        List<Prognostic> prognostics = prognosticRepository.findByMemberId(userId);
+        return prognostics.stream().map(p -> new PrognosticDTO(p.getId(), new MatchMinimalDTO(p.getMatch().getCountryA(), p.getMatch().getCountryB()),
+                p.getMember().getName(), p.getGoalsTeamA(), p.getGoalsTeamB())).toList();
     }
 
     public void save(PrognosticInputDTO inputDTO) {
