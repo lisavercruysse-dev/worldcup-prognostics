@@ -17,16 +17,25 @@
 <h2>Your Prognostic</h2>
 <div th:if="${prognostic == null}">
     <p>No prognostic yet for this match.</p>
-    <a th:href="@{/prognostics/form/{matchId}/{memberId}(matchId=${match.id}, memberId=${memberId})}">
-        <button>
-            Add Prognostic
-        </button>
-    </a>
+    <div th:if="!${match.date.toLocalTime().minusMinutes(60).isBefore(now)}">
+        <a th:href="@{/prognostics/form/{matchId}/{memberId}(matchId=${match.id}, memberId=${memberId})}">
+            <button>
+                Add Prognostic
+            </button>
+        </a>
+    </div>
 </div>
 <div th:if="${prognostic != null}">
     <p th:text="'Goals ' + ${match.countryA} + ': ' + ${prognostic.goalsTeamA}"></p>
     <p th:text="'Goals ' + ${match.countryB} + ': ' + ${prognostic.goalsTeamB}"></p>
 
+    <div th:if="${!match.date.toLocalTime().minusMinutes(60).isBefore(now)}">
+        <a th:href="@{/prognostics/form/{matchId}/{memberId}(matchId=${match.id}, memberId=${memberId})}">
+            <button>
+                Edit
+            </button>
+        </a>
+    </div>
 </div>
 
 </body>
