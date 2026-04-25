@@ -1,4 +1,6 @@
 package com.example.teampredictionworldcup.dto.response;
 
-public record MatchMinimalDTO(String countryA, String countryB) {
+import java.time.LocalDateTime;
+
+public record MatchMinimalDTO(LocalDateTime dateTime, String countryA, String countryB) {
 }

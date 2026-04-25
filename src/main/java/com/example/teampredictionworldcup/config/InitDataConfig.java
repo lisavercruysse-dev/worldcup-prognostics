@@ -89,7 +89,11 @@ public class InitDataConfig implements CommandLineRunner {
                 LocalDateTime.of(2026, 6, 14, 19, 0),
                 s5);
 
-        matchRepository.saveAll(List.of(m1, m2, m3, m4, m5));
+        Match m6 = new Match("Netherlands", "Belgium",
+                LocalDateTime.of(2026, 4, 25, 14, 0),
+                s5);
+
+        matchRepository.saveAll(List.of(m1, m2, m3, m4, m5, m6));
 
         Prognostic p1 = new Prognostic(m1, piet, 1, 2);
         Prognostic p2 = new Prognostic(m1, jan, 2, 1);

@@ -33,7 +33,7 @@
             <tr th:each="match : ${matches}">
                 <td th:text="${match.countryA}"></td>
                 <td th:text="${match.countryB}"></td>
-                <td th:text="${{match.date}}"></td>
+                <td th:text="${#temporals.format(match.date, 'dd-MM-yyyy')} + ', ' + ${#temporals.format(match.date, 'HH:mm')}"></td>
                 <td th:text="|${match.stadium.name}, ${match.stadium.city}|"></td>
                 <td>
                     <a th:href="@{/matches/{matchId}/{memberId}(matchId=${match.id}, memberId=${member.id})}">

@@ -1,10 +1,7 @@
 package com.example.teampredictionworldcup.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,7 +20,9 @@ public class Prognostic {
     @ManyToOne
     private Member member;
 
+    @Setter
     private int goalsTeamA;
+    @Setter
     private int goalsTeamB;
 
     public Prognostic(Match match, Member member, int goalsTeamA, int goalsTeamB) {

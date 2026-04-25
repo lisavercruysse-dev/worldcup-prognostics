@@ -3,6 +3,7 @@ package com.example.teampredictionworldcup.controller;
 import com.example.teampredictionworldcup.dto.response.MatchMinimalDTO;
 import com.example.teampredictionworldcup.dto.response.PrognosticDTO;
 import com.example.teampredictionworldcup.dto.response.PrognosticInputDTO;
+import com.example.teampredictionworldcup.model.Prognostic;
 import com.example.teampredictionworldcup.service.MatchService;
 import com.example.teampredictionworldcup.service.PrognosticService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,13 @@ public class PrognosticController {
 
     @GetMapping("/form/{matchId}/{memberId}")
     public String showForm(@PathVariable int matchId, @PathVariable int memberId, Model model) {
-        model.addAttribute("inputDTO", new PrognosticInputDTO(null, null, matchId, memberId));
+        PrognosticDTO prognostic = prognosticService.getByMatchAndMemberId(matchId, memberId);
+
+        PrognosticInputDTO inputDTO = prognostic != null
+                ? new PrognosticInputDTO(prognostic.goalsTeamA(), prognostic.goalsTeamB(), matchId, memberId)
+                : new PrognosticInputDTO(null, null, matchId, memberId);
+
+        model.addAttribute("inputDTO", inputDTO);
         return "prognosticForm";
     }
 
