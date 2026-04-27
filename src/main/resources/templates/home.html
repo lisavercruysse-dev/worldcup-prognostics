@@ -19,6 +19,7 @@
     <a th:href="@{/teams/leaderboard}">Leaderboard</a><br/>
     <a th:href="@{/prognostics/user/{memberId}(memberId=${member.id})}">My Prognostics</a>
 
+    <h2>Matches</h2>
     <table  border="1" cellpadding="8" cellspacing="0">
         <thead>
             <tr>
@@ -43,5 +44,9 @@
             </tr>
         </tbody>
     </table>
+    <a th:href="@{/matches}">
+        Manage Matches
+    </a>
 </body>
+
 </html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Match Form</title>
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+</head>
+<body>
+    <h1 th:text="${isEdit} ? 'Edit match' : 'Create match'"></h1>
+        <form th:action="@{/matches}" th:object="${matchInputDTO}" method="post">
+            <p>
+                <label>Country A</label>
+                <input type="text" th:field="*{countryA}"/>
+                <span th:if="${#fields.hasErrors('countryA')}" th:errorclass="error" th:errors="*{countryA}"></span>
+            </p>
+
+            <p>
+                <label>Country B</label>
+                <input  type="text" th:field="*{countryB}"/>
+                <span th:if="${#fields.hasErrors('countryB')}" th:errorclass="error" th:errors="*{countryB}"></span>
+            </p>
+
+            <p>
+                <label>Date</label>
+                <input type="datetime-local"
+                       th:name="dateTime"
+                       th:id="dateTime"
+                       th:value="${matchInputDTO.dateTime != null ? #temporals.format(matchInputDTO.dateTime, 'yyyy-MM-dd''T''HH:mm') : ''}"/>
+                <span th:if="${#fields.hasErrors('dateTime')}" th:errorclass="error" th:errors="*{dateTime}"></span>
+            </p>
+
+            <p>
+                <label>Stadium Name</label>
+                <input type="text" th:field="*{stadiumName}"/>
+                <span th:if="${#fields.hasErrors('stadiumName')}" th:errorclass="error" th:errors="*{stadiumName}"></span>
+            </p>
+
+            <p>
+                <label>City</label>
+                <input type="text" th:field="*{city}"/>
+                <span th:if="${#fields.hasErrors('city')}" th:errorclass="error" th:errors="*{city}"></span>
+            </p>
+
+            <p>
+                <label>Stadium code</label>
+                <input type="number" th:field="*{stadiumCode}"/>
+                <span th:if="${#fields.hasErrors('stadiumCode')}" th:errorclass="error" th:errors="*{stadiumCode}"></span>
+            </p>
+
+            <p>
+                <label>Checksum</label>
+                <input type="number" th:field="*{checksum}"/>
+                <span th:if="${#fields.hasErrors('checksum')}" th:errorclass="error" th:errors="*{checksum}"></span>
+            </p>
+
+            <button type="submit">Submit</button>
+        </form>
+</body>
+</html>

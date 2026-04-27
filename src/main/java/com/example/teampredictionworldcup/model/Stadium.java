@@ -31,10 +31,13 @@ public class Stadium {
     @Pattern(regexp = "^[a-zA-Z]+")
     private String city;
 
+    private int checksum;
+
     public Stadium(int stadiumCode, String name, String city) {
         this.stadiumCode = stadiumCode;
         this.name = name;
         this.city = city;
+        this.checksum = stadiumCode % 97;
     }
 
 }
