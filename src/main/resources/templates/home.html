@@ -19,12 +19,14 @@
     <a th:href="@{/teams/leaderboard}">Leaderboard</a><br/>
     <a th:href="@{/prognostics/user/{memberId}(memberId=${member.id})}">My Prognostics</a>
 
+    <h2>Matches</h2>
     <table  border="1" cellpadding="8" cellspacing="0">
         <thead>
             <tr>
                 <th>Team A</th>
                 <th>Team B</th>
-                <th>Date and Time</th>
+                <th>Date</th>
+                <th>Time</th>
                 <th>Location</th>
                 <th>Match Details</th>
             </tr>
@@ -33,7 +35,8 @@
             <tr th:each="match : ${matches}">
                 <td th:text="${match.countryA}"></td>
                 <td th:text="${match.countryB}"></td>
-                <td th:text="${#temporals.format(match.date, 'dd-MM-yyyy')} + ', ' + ${#temporals.format(match.date, 'HH:mm')}"></td>
+                <td th:text="${match.date}"></td>
+                <td th:text="|${match.startTime} - ${match.endTime}|"></td>
                 <td th:text="|${match.stadium.name}, ${match.stadium.city}|"></td>
                 <td>
                     <a th:href="@{/matches/{matchId}/{memberId}(matchId=${match.id}, memberId=${member.id})}">
@@ -43,5 +46,9 @@
             </tr>
         </tbody>
     </table>
+    <a th:href="@{/matches}">
+        Manage Matches
+    </a>
 </body>
+
 </html>

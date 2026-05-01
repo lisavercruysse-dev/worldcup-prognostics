@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Matches</title>
+</head>
+<body>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Team A</th>
+                <th>Team B</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Manage</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="match : ${matches}">
+                <td th:text="${match.countryA}"></td>
+                <td th:text="${match.countryB}"></td>
+                <td th:text="${match.date}"></td>
+                <td th:text="|${match.startTime} - ${match.endTime}|"></td>
+                <td th:text="|${match.stadium.name}, ${match.stadium.city}|"></td>
+                <td>
+                    <a th:href="@{/matches/form/{matchId}(matchId=${match.id})}">
+                        Edit
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/matches/form}">
+        Add
+    </a>
+</body>
+</html>

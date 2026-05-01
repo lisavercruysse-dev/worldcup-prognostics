@@ -38,6 +38,7 @@ public class PrognosticController {
     @PostMapping
     public String processForm(PrognosticInputDTO inputDTO) {
         prognosticService.save(inputDTO);
-        return "redirect:/home";
+        int matchId = inputDTO.matchId();
+        return "redirect:/matches/" + matchId + "/1";
     }
 }

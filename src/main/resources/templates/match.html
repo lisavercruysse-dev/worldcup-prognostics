@@ -8,8 +8,8 @@
 
 <h1 th:text="'Teams: ' + ${match.countryA} + ' vs ' + ${match.countryB}"></h1>
 <p th:text="'Location: ' + ${match.stadium.name} + ', ' + ${match.stadium.city}"></p>
-<p th:text="'Date: ' + ${#temporals.format(match.date, 'dd-MM-yyyy')}"></p>
-<p th:text="'Time: ' + ${#temporals.format(match.date, 'HH:mm')}"></p>
+<p th:text="'Date: ' + ${match.date}"></p>
+<p th:text="'Time: ' + ${match.startTime} + ' - ' + ${match.endTime}"></p>
 
 <h2>Final Score</h2>
 <p>To Be Implemented</p>
@@ -17,7 +17,7 @@
 <h2>Your Prognostic</h2>
 <div th:if="${prognostic == null}">
     <p>No prognostic yet for this match.</p>
-    <div th:if="!${match.date.toLocalTime().minusMinutes(60).isBefore(now)}">
+    <div th:if="!${match.date}">
         <a th:href="@{/prognostics/form/{matchId}/{memberId}(matchId=${match.id}, memberId=${memberId})}">
             <button>
                 Add Prognostic
@@ -29,7 +29,7 @@
     <p th:text="'Goals ' + ${match.countryA} + ': ' + ${prognostic.goalsTeamA}"></p>
     <p th:text="'Goals ' + ${match.countryB} + ': ' + ${prognostic.goalsTeamB}"></p>
 
-    <div th:if="${!match.date.toLocalTime().minusMinutes(60).isBefore(now)}">
+    <div th:if="${!match.date}">
         <a th:href="@{/prognostics/form/{matchId}/{memberId}(matchId=${match.id}, memberId=${memberId})}">
             <button>
                 Edit
