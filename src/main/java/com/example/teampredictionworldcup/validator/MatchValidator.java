@@ -36,7 +36,7 @@ public class MatchValidator implements Validator {
         }
 
         if (matches.stream().anyMatch(m ->
-                m.id() != dto.id() &&
+                (dto.id() == null || m.id() != dto.id()) &&
                 m.date().equals(dto.date()) &&
                 m.stadium().stadiumCode().equals(dto.stadiumCode()) &&
                 m.startTime().isBefore(dto.endtime()) &&

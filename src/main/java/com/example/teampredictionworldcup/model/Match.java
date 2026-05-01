@@ -45,6 +45,12 @@ public class Match {
     @Pattern(regexp = "^[a-zA-Z]+")
     private String countryB;
 
+    @Setter
+    private Integer scoreA;
+
+    @Setter
+    private Integer scoreB;
+
     public Match(String countryA, String countryB, LocalDate date, Stadium stadium, LocalTime startTime, LocalTime endTime) {
         this.countryA = countryA;
         this.countryB = countryB;

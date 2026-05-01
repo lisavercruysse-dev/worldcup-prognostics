@@ -2,6 +2,7 @@ package com.example.teampredictionworldcup.service;
 
 import com.example.teampredictionworldcup.dto.response.MatchDTO;
 import com.example.teampredictionworldcup.dto.response.MatchInputDTO;
+import com.example.teampredictionworldcup.dto.response.ScoreDTO;
 import com.example.teampredictionworldcup.dto.response.StadiumDTO;
 import com.example.teampredictionworldcup.model.Match;
 import com.example.teampredictionworldcup.model.Stadium;
@@ -26,7 +27,7 @@ public class MatchService {
         List<Match> matches = matchRepository.findAll(Sort.by(Sort.Direction.ASC, "date"));
         return matches.stream().map(m ->
                 new MatchDTO(m.getId(), m.getDate(), new StadiumDTO(m.getStadium().getName(),
-                        m.getStadium().getCity(), m.getStadium().getStadiumCode(), m.getStadium().getChecksum()), m.getCountryA(), m.getCountryB(), m.getStartTime(), m.getEndTime())).toList();
+                        m.getStadium().getCity(), m.getStadium().getStadiumCode(), m.getStadium().getChecksum()), m.getCountryA(), m.getCountryB(), m.getStartTime(), m.getEndTime(), m.getScoreA(), m.getScoreB())).toList();
     }
 
     public MatchDTO getMatchById(int id){
@@ -34,7 +35,7 @@ public class MatchService {
                 .orElseThrow(() -> new RuntimeException("Match not found with id: " + id));
         return new MatchDTO(match.getId(), match.getDate(),
                     new StadiumDTO(match.getStadium().getName(), match.getStadium().getCity(), match.getStadium().getStadiumCode(), match.getStadium().getChecksum()),
-                    match.getCountryA(), match.getCountryB(), match.getStartTime(), match.getEndTime());
+                    match.getCountryA(), match.getCountryB(), match.getStartTime(), match.getEndTime(), match.getScoreA(), match.getScoreB());
     }
 
     public void save(MatchInputDTO dto) {
@@ -43,8 +44,19 @@ public class MatchService {
             stadium = new Stadium(dto.stadiumCode(), dto.stadiumName(), dto.city());
             stadiumRepository.save(stadium);
         }
-        Match newMatch = new Match(dto.countryA(), dto.countryB(), dto.date(), stadium, LocalTime.of(20, 0), LocalTime.of(22, 0));
+        Match newMatch = new Match(dto.countryA(), dto.countryB(), dto.date(), stadium, dto.starttime(), dto.endtime());
         matchRepository.save(newMatch);
+    }
+
+    public void saveScore(ScoreDTO dto) {
+        Match match = matchRepository.findById(dto.matchId()).orElse(null);
+
+        match.setScoreA(dto.scoreTeamA());
+        match.setScoreB(dto.scoreTeamB());
+
+        if (match != null){
+            matchRepository.save(match);
+        }
     }
 
 }

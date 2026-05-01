@@ -2,6 +2,7 @@ package com.example.teampredictionworldcup.controller;
 
 import com.example.teampredictionworldcup.dto.response.MatchDTO;
 import com.example.teampredictionworldcup.dto.response.MatchInputDTO;
+import com.example.teampredictionworldcup.dto.response.ScoreDTO;
 import com.example.teampredictionworldcup.service.MatchService;
 import com.example.teampredictionworldcup.service.PrognosticService;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Controller
@@ -32,6 +34,7 @@ public class MatchController {
     @GetMapping
     public String manageMatches(Model model) {
         model.addAttribute("matches", matchService.getAllMatches());
+        model.addAttribute("now",  LocalDate.now());
         return "manageMatches";
     }
 
@@ -60,6 +63,23 @@ public class MatchController {
             return "matchForm";
         }
         matchService.save(matchInputDTO);
+        return "redirect:/matches";
+    }
+
+    @GetMapping("/{matchId}/score")
+    public String showScoreForm(@PathVariable int matchId, Model model) {
+        model.addAttribute("match", matchService.getMatchById(matchId));
+        ScoreDTO scoreDTO = new ScoreDTO(null, null, matchId);
+        model.addAttribute("scoreDTO", scoreDTO);
+        return "scoreForm";
+    }
+
+    @PostMapping("/{matchId}/score")
+    public String saveScore(@Valid ScoreDTO scoreInputDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "scoreForm";
+        }
+        matchService.saveScore(scoreInputDTO);
         return "redirect:/matches";
     }
 }

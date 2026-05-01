@@ -13,6 +13,7 @@
                 <th>Date</th>
                 <th>Time</th>
                 <th>Location</th>
+                <th>End Score</th>
                 <th>Manage</th>
             </tr>
         </thead>
@@ -23,6 +24,16 @@
                 <td th:text="${match.date}"></td>
                 <td th:text="|${match.startTime} - ${match.endTime}|"></td>
                 <td th:text="|${match.stadium.name}, ${match.stadium.city}|"></td>
+                <td th:if="${match.scoreA == null && match.date.isBefore(now)}">
+                    <a th:href="@{/matches/{matchId}/score(matchId=${match.id})}">
+                        <button>
+                            Enter score
+                        </button>
+                    </a>
+                </td>
+                <td th:unless="${match.scoreA == null && match.date.isBefore(now)}">
+                    <span th:text="${match.scoreA != null ? match.scoreA + ' - ' + match.scoreB : 'no score yet'}"></span>
+                </td>
                 <td>
                     <a th:href="@{/matches/form/{matchId}(matchId=${match.id})}">
                         Edit
