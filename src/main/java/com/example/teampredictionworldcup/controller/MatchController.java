@@ -40,8 +40,8 @@ public class MatchController {
         MatchDTO match = matchService.getMatchById(matchId);
 
         MatchInputDTO inputDTO = match != null
-                ? new MatchInputDTO(match.countryA(), match.countryB(), match.date(), match.stadium().stadiumCode(), match.stadium().checksum(), match.stadium().name(), match.stadium().city())
-                : new MatchInputDTO(null, null, null, 0, 0, null, null);
+                ? new MatchInputDTO(match.id(), match.countryA(), match.countryB(), match.date(), match.startTime(), match.endTime(), match.stadium().stadiumCode(), match.stadium().checksum(), match.stadium().name(), match.stadium().city())
+                : new MatchInputDTO(null, null, null, null, null, null,0, 0, null, null);
 
         model.addAttribute("matchInputDTO", inputDTO);
         model.addAttribute("isEdit", true);

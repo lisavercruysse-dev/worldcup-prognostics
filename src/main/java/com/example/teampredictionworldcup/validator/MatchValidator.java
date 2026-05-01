@@ -35,13 +35,17 @@ public class MatchValidator implements Validator {
             }
         }
 
-        if (matches.stream().anyMatch(m -> m.date().equals(dto.dateTime()) &&
-                m.stadium().stadiumCode().equals(dto.stadiumCode()))) {
-            errors.rejectValue("dateTime", "dateTime.notAvailable","A match is already scheduled in this stadium at this time.");
+        if (matches.stream().anyMatch(m ->
+                m.id() != dto.id() &&
+                m.date().equals(dto.date()) &&
+                m.stadium().stadiumCode().equals(dto.stadiumCode()) &&
+                m.startTime().isBefore(dto.endtime()) &&
+                dto.starttime().isBefore(m.endTime()))) {
+            errors.rejectValue("starttime", "startTime.notAvailable", "A match is already scheduled in this stadium during this time.");
         }
 
-        if (dto.dateTime().toLocalDate().isBefore(today)) {
-            errors.rejectValue("dateTime", "dateTime.future", "Cannot be in the past");
+        if (dto.date().isBefore(today)) {
+            errors.rejectValue("date", "dateTime.future", "Cannot be in the past");
         }
 
         if (dto.countryA().isBlank() || dto.countryB().isBlank()) return;

@@ -7,7 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Component
@@ -70,28 +72,28 @@ public class InitDataConfig implements CommandLineRunner {
         stadiumRepository.saveAll(List.of(s1, s2, s3, s4, s5));
 
         Match m1 = new Match("Brazil", "Argentina",
-                LocalDateTime.of(2026, 6, 10, 18, 0),
-                s1);
+                LocalDate.of(2026, 6, 8),
+                s1, LocalTime.of(18, 0), LocalTime.of(20, 0));
 
         Match m2 = new Match("France", "Germany",
-                LocalDateTime.of(2026, 6, 11, 20, 0),
-                s2);
+                LocalDate.of(2026, 6, 12),
+                s2, LocalTime.of(14, 0),  LocalTime.of(16, 0));
 
         Match m3 = new Match("Spain", "Portugal",
-                LocalDateTime.of(2026, 6, 12, 17, 30),
-                s3);
+                LocalDate.of(2026, 6, 12),
+                s3, LocalTime.of(14, 0),  LocalTime.of(16, 0));
 
         Match m4 = new Match("England", "Italy",
-                LocalDateTime.of(2026, 6, 13, 21, 0),
-                s4);
+                LocalDate.of(2026, 6, 13),
+                s4, LocalTime.of(15, 30),  LocalTime.of(17, 30));
 
         Match m5 = new Match("Netherlands", "Belgium",
-                LocalDateTime.of(2026, 6, 14, 19, 0),
-                s5);
+                LocalDate.of(2026, 6, 14),
+                s5, LocalTime.of(19, 30),  LocalTime.of(21, 30));
 
         Match m6 = new Match("Netherlands", "Belgium",
-                LocalDateTime.of(2026, 4, 25, 14, 0),
-                s5);
+                LocalDate.of(2026, 4, 25),
+                s5, LocalTime.of(18, 0),  LocalTime.of(20, 0));
 
         matchRepository.saveAll(List.of(m1, m2, m3, m4, m5, m6));
 

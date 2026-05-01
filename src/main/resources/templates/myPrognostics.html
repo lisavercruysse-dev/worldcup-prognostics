@@ -10,7 +10,7 @@
 
     <div th:each="p : ${prognostics}">
         <h3 th:text="|Prognostics: ${p.match.countryA} VS. ${p.match.countryB}|"></h3>
-        <p th:text="${#temporals.format(p.match.dateTime, 'dd-MM-yyyy')}"></p>
+        <p th:text="${p.match.date}"></p>
         <table border="1" cellpadding="8" cellspacing="0">
             <thead>
             <tr>

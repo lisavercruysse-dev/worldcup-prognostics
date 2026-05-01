@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -22,18 +23,18 @@ public class MatchService {
     private final StadiumRepository stadiumRepository;
 
     public List<MatchDTO> getAllMatches(){
-        List<Match> matches = matchRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime"));
+        List<Match> matches = matchRepository.findAll(Sort.by(Sort.Direction.ASC, "date"));
         return matches.stream().map(m ->
-                new MatchDTO(m.getId(), m.getDateTime(), new StadiumDTO(m.getStadium().getName(),
-                        m.getStadium().getCity(), m.getStadium().getStadiumCode(), m.getStadium().getChecksum()), m.getCountryA(), m.getCountryB())).toList();
+                new MatchDTO(m.getId(), m.getDate(), new StadiumDTO(m.getStadium().getName(),
+                        m.getStadium().getCity(), m.getStadium().getStadiumCode(), m.getStadium().getChecksum()), m.getCountryA(), m.getCountryB(), m.getStartTime(), m.getEndTime())).toList();
     }
 
     public MatchDTO getMatchById(int id){
         Match match = matchRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Match not found with id: " + id));
-        return new MatchDTO(match.getId(), match.getDateTime(),
+        return new MatchDTO(match.getId(), match.getDate(),
                     new StadiumDTO(match.getStadium().getName(), match.getStadium().getCity(), match.getStadium().getStadiumCode(), match.getStadium().getChecksum()),
-                    match.getCountryA(), match.getCountryB());
+                    match.getCountryA(), match.getCountryB(), match.getStartTime(), match.getEndTime());
     }
 
     public void save(MatchInputDTO dto) {
@@ -42,7 +43,7 @@ public class MatchService {
             stadium = new Stadium(dto.stadiumCode(), dto.stadiumName(), dto.city());
             stadiumRepository.save(stadium);
         }
-        Match newMatch = new Match(dto.countryA(), dto.countryB(), dto.dateTime(), stadium);
+        Match newMatch = new Match(dto.countryA(), dto.countryB(), dto.date(), stadium, LocalTime.of(20, 0), LocalTime.of(22, 0));
         matchRepository.save(newMatch);
     }
 

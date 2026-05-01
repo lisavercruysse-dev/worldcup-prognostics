@@ -10,7 +10,8 @@
             <tr>
                 <th>Team A</th>
                 <th>Team B</th>
-                <th>Date and Time</th>
+                <th>Date</th>
+                <th>Time</th>
                 <th>Location</th>
                 <th>Manage</th>
             </tr>
@@ -19,7 +20,8 @@
             <tr th:each="match : ${matches}">
                 <td th:text="${match.countryA}"></td>
                 <td th:text="${match.countryB}"></td>
-                <td th:text="${#temporals.format(match.date, 'dd-MM-yyyy')} + ', ' + ${#temporals.format(match.date, 'HH:mm')}"></td>
+                <td th:text="${match.date}"></td>
+                <td th:text="|${match.startTime} - ${match.endTime}|"></td>
                 <td th:text="|${match.stadium.name}, ${match.stadium.city}|"></td>
                 <td>
                     <a th:href="@{/matches/form/{matchId}(matchId=${match.id})}">

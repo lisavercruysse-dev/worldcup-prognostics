@@ -22,11 +22,29 @@
 
             <p>
                 <label>Date</label>
-                <input type="datetime-local"
-                       th:name="dateTime"
-                       th:id="dateTime"
-                       th:value="${matchInputDTO.dateTime != null ? #temporals.format(matchInputDTO.dateTime, 'yyyy-MM-dd''T''HH:mm') : ''}"/>
-                <span th:if="${#fields.hasErrors('dateTime')}" th:errorclass="error" th:errors="*{dateTime}"></span>
+                <input type="date"
+                       th:name="date"
+                       th:id="date"
+                       th:value="${matchInputDTO.date != null ? #temporals.format(matchInputDTO.date, 'yyyy-MM-dd') : ''}"/>
+                <span th:if="${#fields.hasErrors('date')}" th:errorclass="error" th:errors="*{date}"></span>
+            </p>
+
+            <p>
+                <label>Starttime</label>
+                <input type="time"
+                       th:name="starttime"
+                       th:id="starttime"
+                       th:value="${matchInputDTO.starttime != null ? matchInputDTO.starttime : ''}"/>
+                <span th:if="${#fields.hasErrors('starttime')}" th:errorclass="error" th:errors="*{starttime}"></span>
+            </p>
+
+            <p>
+                <label>Endtime</label>
+                <input type="time"
+                       th:name="endtime"
+                       th:id="endtime"
+                       th:value="${matchInputDTO.endtime != null ? matchInputDTO.endtime : ''}"/>
+                <span th:if="${#fields.hasErrors('endtime')}" th:errorclass="error" th:errors="*{endtime}"></span>
             </p>
 
             <p>
@@ -52,6 +70,8 @@
                 <input type="number" th:field="*{checksum}"/>
                 <span th:if="${#fields.hasErrors('checksum')}" th:errorclass="error" th:errors="*{checksum}"></span>
             </p>
+
+            <input type="hidden" th:field="*{id}"/>
 
             <button type="submit">Submit</button>
         </form>

@@ -27,7 +27,7 @@ public class PrognosticService {
     public PrognosticDTO getByMatchAndMemberId(int matchId, int memberId) {
         Prognostic prognostic = prognosticRepository.findByMatchIdAndMemberId(matchId, memberId).orElse(null);
         if (prognostic != null) {
-            return new PrognosticDTO(prognostic.getId(), new MatchMinimalDTO(prognostic.getMatch().getDateTime(), prognostic.getMatch().getCountryA(), prognostic.getMatch().getCountryB()),
+            return new PrognosticDTO(prognostic.getId(), new MatchMinimalDTO(prognostic.getMatch().getDate(), prognostic.getMatch().getCountryA(), prognostic.getMatch().getCountryB()),
                     prognostic.getMember().getName(), prognostic.getGoalsTeamA(), prognostic.getGoalsTeamB());
         }
         return null;
@@ -36,7 +36,7 @@ public class PrognosticService {
     public PrognosticDTO getById(int id) {
         Prognostic prognostic = prognosticRepository.findById(id).orElse(null);
         if (prognostic != null) {
-            return new PrognosticDTO(prognostic.getId(), new MatchMinimalDTO(prognostic.getMatch().getDateTime(), prognostic.getMatch().getCountryA(), prognostic.getMatch().getCountryB()),
+            return new PrognosticDTO(prognostic.getId(), new MatchMinimalDTO(prognostic.getMatch().getDate(), prognostic.getMatch().getCountryA(), prognostic.getMatch().getCountryB()),
                     prognostic.getMember().getName(), prognostic.getGoalsTeamA(), prognostic.getGoalsTeamB());
         }
         return null;
@@ -44,7 +44,7 @@ public class PrognosticService {
 
     public List<PrognosticDTO> getByUserId(int userId) {
         List<Prognostic> prognostics = prognosticRepository.findByMemberId(userId);
-        return prognostics.stream().map(p -> new PrognosticDTO(p.getId(), new MatchMinimalDTO(p.getMatch().getDateTime(), p.getMatch().getCountryA(), p.getMatch().getCountryB()),
+        return prognostics.stream().map(p -> new PrognosticDTO(p.getId(), new MatchMinimalDTO(p.getMatch().getDate(), p.getMatch().getCountryA(), p.getMatch().getCountryB()),
                 p.getMember().getName(), p.getGoalsTeamA(), p.getGoalsTeamB())).toList();
     }
 
