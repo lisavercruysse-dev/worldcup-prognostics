@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stadiums</title>
+</head>
+<body>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Stadiumcode</th>
+                <th>name</th>
+                <th>city</th>
+                <th>capacity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="s : ${stadiums}">
+                <td th:text="${s.stadiumCode}"></td>
+                <td th:text="${s.name}"></td>
+                <td th:text="${s.city}"></td>
+                <td th:text="${s.capacity}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/stadiums/form}">
+        Add
+    </a>
+</body>
+</html>

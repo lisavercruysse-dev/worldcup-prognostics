@@ -27,21 +27,21 @@ public class MatchService {
         List<Match> matches = matchRepository.findAll(Sort.by(Sort.Direction.ASC, "date"));
         return matches.stream().map(m ->
                 new MatchDTO(m.getId(), m.getDate(), new StadiumDTO(m.getStadium().getName(),
-                        m.getStadium().getCity(), m.getStadium().getStadiumCode(), m.getStadium().getChecksum()), m.getCountryA(), m.getCountryB(), m.getStartTime(), m.getEndTime(), m.getScoreA(), m.getScoreB())).toList();
+                        m.getStadium().getCity(), m.getStadium().getStadiumCode(), m.getStadium().getChecksum(), m.getStadium().getCapacity()), m.getCountryA(), m.getCountryB(), m.getStartTime(), m.getEndTime(), m.getScoreA(), m.getScoreB())).toList();
     }
 
     public MatchDTO getMatchById(int id){
         Match match = matchRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Match not found with id: " + id));
         return new MatchDTO(match.getId(), match.getDate(),
-                    new StadiumDTO(match.getStadium().getName(), match.getStadium().getCity(), match.getStadium().getStadiumCode(), match.getStadium().getChecksum()),
+                    new StadiumDTO(match.getStadium().getName(), match.getStadium().getCity(), match.getStadium().getStadiumCode(), match.getStadium().getChecksum(), match.getStadium().getCapacity()),
                     match.getCountryA(), match.getCountryB(), match.getStartTime(), match.getEndTime(), match.getScoreA(), match.getScoreB());
     }
 
     public void save(MatchInputDTO dto) {
         Stadium stadium = stadiumRepository.findById(dto.stadiumCode()).orElse(null);
         if (stadium == null) {
-            stadium = new Stadium(dto.stadiumCode(), dto.stadiumName(), dto.city());
+            stadium = new Stadium(dto.stadiumCode(), dto.stadiumName(), dto.city(), 20);
             stadiumRepository.save(stadium);
         }
         Match newMatch = new Match(dto.countryA(), dto.countryB(), dto.date(), stadium, dto.starttime(), dto.endtime());

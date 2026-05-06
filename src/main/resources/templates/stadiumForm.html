@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Match Form</title>
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+</head>
+<body>
+    <h1>Create stadium</h1>
+
+        <form th:action="@{/stadiums}" th:object="${stadiumInputDTO}" method="post">
+            <p>
+                <label>Code</label>
+                <input type="text" th:field="*{code}"/>
+                <span th:if="${#fields.hasErrors('code')}" th:errorclass="error" th:errors="*{code}"></span>
+            </p>
+
+            <p>
+                <label>Checksum</label>
+                <input type="text" th:field="*{checksum}"/>
+                <span th:if="${#fields.hasErrors('checksum')}" th:errorclass="error" th:errors="*{checksum}"></span>
+            </p>
+
+            <p>
+                <label>Name</label>
+                <input type="text" th:field="*{name}"/>
+                <span th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}"></span>
+            </p>
+
+            <p>
+                <label>City</label>
+                <input type="text" th:field="*{city}"/>
+                <span th:if="${#fields.hasErrors('city')}" th:errorclass="error" th:errors="*{city}"></span>
+            </p>
+
+            <p>
+                <label>Capacity</label>
+                <input type="text" th:field="*{capacity}"/>
+                <span th:if="${#fields.hasErrors('capacity')}" th:errorclass="error" th:errors="*{capacity}"></span>
+            </p>
+
+            <button type="submit">Submit</button>
+        </form>
+</body>
+</html>

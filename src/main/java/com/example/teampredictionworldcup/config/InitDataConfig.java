@@ -63,11 +63,11 @@ public class InitDataConfig implements CommandLineRunner {
 
         memberRepository.saveAll(List.of(sam, lilly, tom, luca, pieter, katrien, bert));
 
-        Stadium s1 = new Stadium(1001, "National Arena", "London");
-        Stadium s2 = new Stadium(1002, "Olympic Stadium", "Paris");
-        Stadium s3 = new Stadium(1003, "Victory Stadium", "Madrid");
-        Stadium s4 = new Stadium(1004, "Grand Arena", "Rome");
-        Stadium s5 = new Stadium(1005, "Sunshine Park", "Lisbon");
+        Stadium s1 = new Stadium(1001, "National Arena", "London", 500);
+        Stadium s2 = new Stadium(1002, "Olympic Stadium", "Paris", 1000);
+        Stadium s3 = new Stadium(1003, "Victory Stadium", "Madrid", 800);
+        Stadium s4 = new Stadium(1004, "Grand Arena", "Rome", 900);
+        Stadium s5 = new Stadium(1005, "Sunshine Park", "Lisbon", 400);
 
         stadiumRepository.saveAll(List.of(s1, s2, s3, s4, s5));
 
