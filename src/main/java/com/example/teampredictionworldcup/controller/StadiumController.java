@@ -30,16 +30,17 @@ public class StadiumController {
     }
 
     @GetMapping("/form")
-    public String showForm(StadiumInputDTO stadiumInputDTO, Model model) {
+    public String showForm(StadiumInputDTO stadiumInputDTO) {
         return "stadiumForm";
     }
 
     @PostMapping
-    public String processForm(@Valid StadiumInputDTO stadiumInputDTO, BindingResult bindingResult, Model model) {
+    public String processForm(@Valid StadiumInputDTO stadiumInputDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "stadiumForm";
         }
-        stadiumService.save(stadiumInputDTO);
+            stadiumService.save(stadiumInputDTO);
+
         return "redirect:/home";
     }
 }

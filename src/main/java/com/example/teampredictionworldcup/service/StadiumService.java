@@ -26,7 +26,8 @@ public class StadiumService {
     }
 
     public void save(StadiumInputDTO dto) {
-        Stadium stadium = new Stadium(dto.code(), dto.name(), dto.city(), dto.capacity());
+        int code = Integer.parseInt(dto.code());
+        Stadium stadium = new Stadium(code, dto.name(), dto.city(), dto.capacity());
         stadiumRepository.save(stadium);
     }
 }

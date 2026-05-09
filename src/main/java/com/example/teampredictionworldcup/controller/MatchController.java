@@ -3,8 +3,10 @@ package com.example.teampredictionworldcup.controller;
 import com.example.teampredictionworldcup.dto.response.MatchDTO;
 import com.example.teampredictionworldcup.dto.response.MatchInputDTO;
 import com.example.teampredictionworldcup.dto.response.ScoreDTO;
+import com.example.teampredictionworldcup.dto.response.StadiumDTO;
 import com.example.teampredictionworldcup.service.MatchService;
 import com.example.teampredictionworldcup.service.PrognosticService;
+import com.example.teampredictionworldcup.service.StadiumService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,6 +24,7 @@ import java.time.LocalDateTime;
 public class MatchController {
     private final PrognosticService prognosticService;
     private final MatchService matchService;
+    private final StadiumService stadiumService;
 
     @GetMapping("/{matchId}/{memberId}")
     public String getMatchById(@PathVariable int matchId, @PathVariable int memberId, Model model) {
@@ -41,19 +45,23 @@ public class MatchController {
     @GetMapping("/form/{matchId}")
     public String showForm(@PathVariable int matchId, Model model) {
         MatchDTO match = matchService.getMatchById(matchId);
+        List<StadiumDTO> stadiums = stadiumService.getAllStadiums();
 
         MatchInputDTO inputDTO = match != null
-                ? new MatchInputDTO(match.id(), match.countryA(), match.countryB(), match.date(), match.startTime(), match.endTime(), match.stadium().stadiumCode(), match.stadium().checksum(), match.stadium().name(), match.stadium().city())
-                : new MatchInputDTO(null, null, null, null, null, null,0, 0, null, null);
+                ? new MatchInputDTO(match.id(), match.countryA(), match.countryB(), match.date(), match.startTime(), match.endTime(), match.stadium())
+                : new MatchInputDTO(null, null, null, null, null, null,null);
 
         model.addAttribute("matchInputDTO", inputDTO);
         model.addAttribute("isEdit", true);
+        model.addAttribute("stadiums", stadiums);
         return "matchForm";
     }
 
     @GetMapping("/form")
     public String showForm(MatchInputDTO matchInputDTO, Model model) {
+        List<StadiumDTO> stadiums = stadiumService.getAllStadiums();
         model.addAttribute("isEdit", false);
+        model.addAttribute("stadiums", stadiums);
         return "matchForm";
     }
 

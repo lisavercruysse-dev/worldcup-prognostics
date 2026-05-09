@@ -39,11 +39,7 @@ public class MatchService {
     }
 
     public void save(MatchInputDTO dto) {
-        Stadium stadium = stadiumRepository.findById(dto.stadiumCode()).orElse(null);
-        if (stadium == null) {
-            stadium = new Stadium(dto.stadiumCode(), dto.stadiumName(), dto.city(), 20);
-            stadiumRepository.save(stadium);
-        }
+        Stadium stadium = stadiumRepository.findById(dto.id()).orElseThrow(() -> new IllegalArgumentException("Stadium not found with id: " + dto.id()));
         Match newMatch = new Match(dto.countryA(), dto.countryB(), dto.date(), stadium, dto.starttime(), dto.endtime());
         matchRepository.save(newMatch);
     }

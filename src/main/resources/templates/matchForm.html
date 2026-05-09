@@ -48,21 +48,16 @@
             </p>
 
             <p>
-                <label>Location</label>
-                <select>
-                    <option>Stadium name + location</option>
-                </select>
-                <span th:if="${#fields.hasErrors('location')}" th:errorclass="error" th:errors="*{location}"></span>
-            </p>
-
-            <p>
                 <label>Stadium</label>
-                <select>
-                    <option>Stadium name + location</option>
+                <select th:field="*{stadium}">
+                    <option value="default">Select a stadium</option>
+                    <option th:each="stadium : ${stadiums}"
+                            th:value="|${stadium.name}: ${stadium.city}|"
+                            th:text="|${stadium.name} (${stadium.city})|">
+                    </option>
                 </select>
                 <span th:if="${#fields.hasErrors('stadium')}" th:errorclass="error" th:errors="*{stadium}"></span>
             </p>
-
 
             <input type="hidden" th:field="*{id}"/>
 
