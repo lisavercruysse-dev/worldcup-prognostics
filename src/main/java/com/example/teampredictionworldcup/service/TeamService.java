@@ -32,18 +32,6 @@ public class TeamService {
         return lijstTeams.stream().map(t -> new TeamMinimalDTO(t.getTeamName(), t.getScore(), t.getMembers().size())).toList();
     }
 
-    /*
-    public TeamDTO getTeamByTeamName(String teamName) {
-        Team team = teamRepository.findById(teamName).orElse(null);
-        if (team != null) {
-            return new TeamDTO(team.getTeamName(), team.getInviteCode(),team.getOwner().getName(),
-                    team.getMembers().stream()
-                            .map(m -> new MemberMinimalDTO(m.getName(), m.getScore()))
-                            .toList(), team.getScore());
-        }
-        return null;
-    }*/
-
     public List<TeamDTO> getTopTenTeams() {
         List<Team> teams = teamRepository.findTop10ByOrderByScoreDesc();
 

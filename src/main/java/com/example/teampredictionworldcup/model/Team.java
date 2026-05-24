@@ -60,4 +60,8 @@ public class Team {
         members.remove(member);
         member.setTeam(null);
     }
+
+    public void updateScore(int score) {
+        this.score += score;
+    }
 }

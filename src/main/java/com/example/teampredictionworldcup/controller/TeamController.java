@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/teams")
@@ -28,7 +30,10 @@ public class TeamController {
     public String showTeamOverview(@PathVariable int memberId, Model model) {
         String teamName = memberService.getMemberById(memberId).team();
         if (teamName != null) {
-            model.addAttribute("members", memberService.getMembersFromTeam(teamName));
+            model.addAttribute("members", memberService.getMembersFromTeam(teamName)
+                    .stream()
+                    .sorted(Comparator.comparingInt(MemberDTO::score).reversed())
+                    .toList());
             model.addAttribute("team", teamService.getTeamFromMember(memberId));
         } else {
             model.addAttribute("team", null);
