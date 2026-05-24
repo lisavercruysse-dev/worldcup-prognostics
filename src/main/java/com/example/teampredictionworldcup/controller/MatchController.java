@@ -4,6 +4,7 @@ import com.example.teampredictionworldcup.dto.response.MatchDTO;
 import com.example.teampredictionworldcup.dto.response.MatchInputDTO;
 import com.example.teampredictionworldcup.dto.response.ScoreDTO;
 import com.example.teampredictionworldcup.dto.response.StadiumDTO;
+import com.example.teampredictionworldcup.model.Stadium;
 import com.example.teampredictionworldcup.service.MatchService;
 import com.example.teampredictionworldcup.service.PrognosticService;
 import com.example.teampredictionworldcup.service.StadiumService;
@@ -28,10 +29,11 @@ public class MatchController {
 
     @GetMapping("/{matchId}/{memberId}")
     public String getMatchById(@PathVariable int matchId, @PathVariable int memberId, Model model) {
-        LocalDateTime now = LocalDateTime.now();
-        model.addAttribute("match", matchService.getMatchById(matchId));
+        MatchDTO matchDTO = matchService.getMatchById(matchId);
+        boolean canEdit = LocalDateTime.now().isBefore(LocalDateTime.of(matchDTO.date(), matchDTO.startTime()).minusMinutes(60));
+        model.addAttribute("match", matchDTO);
         model.addAttribute("prognostic", prognosticService.getByMatchAndMemberId(matchId, memberId));
-        model.addAttribute("now", now);
+        model.addAttribute("canEdit", canEdit);
         return "match";
     }
 
@@ -42,14 +44,13 @@ public class MatchController {
         return "manageMatches";
     }
 
-    @GetMapping("/form/{matchId}")
+   @GetMapping("/form/{matchId}")
     public String showForm(@PathVariable int matchId, Model model) {
         MatchDTO match = matchService.getMatchById(matchId);
         List<StadiumDTO> stadiums = stadiumService.getAllStadiums();
+        Stadium stadium = stadiumService.getById(match.stadiumId());
 
-        MatchInputDTO inputDTO = match != null
-                ? new MatchInputDTO(match.id(), match.countryA(), match.countryB(), match.date(), match.startTime(), match.endTime(), match.stadium())
-                : new MatchInputDTO(null, null, null, null, null, null,null);
+        MatchInputDTO inputDTO = new MatchInputDTO(match.id(), match.countryA(), match.countryB(), match.date(), match.startTime(), match.endTime(), stadium.getStadiumCode());
 
         model.addAttribute("matchInputDTO", inputDTO);
         model.addAttribute("isEdit", true);
@@ -66,8 +67,9 @@ public class MatchController {
     }
 
     @PostMapping
-    public String saveMatch(@Valid MatchInputDTO matchInputDTO, BindingResult bindingResult) {
+    public String saveMatch(@Valid MatchInputDTO matchInputDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("stadiums", stadiumService.getAllStadiums());
             return "matchForm";
         }
         matchService.save(matchInputDTO);

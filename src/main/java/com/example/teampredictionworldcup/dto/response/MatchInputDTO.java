@@ -1,5 +1,6 @@
 package com.example.teampredictionworldcup.dto.response;
 
+import com.example.teampredictionworldcup.validator.ValidDate;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ public record MatchInputDTO(
         @Size(min = 4, message = "Must be at least 4 letters long.")
         String countryB,
 
+        @ValidDate
         @NotNull(message = "Date must be filled in.")
         LocalDate date,
 
@@ -29,4 +31,4 @@ public record MatchInputDTO(
         LocalTime endtime,
 
         @NotNull
-        StadiumDTO stadium) {}
+        Integer stadiumCode) {}

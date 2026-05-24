@@ -23,7 +23,7 @@
                 <td th:text="${match.countryB}"></td>
                 <td th:text="${match.date}"></td>
                 <td th:text="|${match.startTime} - ${match.endTime}|"></td>
-                <td th:text="|${match.stadium.name}, ${match.stadium.city}|"></td>
+                <td th:text="|${match.stadiumName}, ${match.stadiumCity}|"></td>
                 <td th:if="${match.scoreA == null && match.date.isBefore(now)}">
                     <a th:href="@{/matches/{matchId}/score(matchId=${match.id})}">
                         <button>

@@ -1,9 +1,7 @@
 package com.example.teampredictionworldcup.validator;
 
 import com.example.teampredictionworldcup.dto.response.JoinTeamInputDTO;
-import com.example.teampredictionworldcup.dto.response.TeamOverviewDTO;
-import com.example.teampredictionworldcup.model.Team;
-import com.example.teampredictionworldcup.repository.TeamRepository;
+import com.example.teampredictionworldcup.dto.response.TeamDTO;
 import com.example.teampredictionworldcup.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.Validator;
@@ -20,9 +18,9 @@ public class JoinTeamValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        JoinTeamInputDTO joinTeamDTO = (JoinTeamInputDTO) target;
+       /* JoinTeamInputDTO joinTeamDTO = (JoinTeamInputDTO) target;
 
-        TeamOverviewDTO dto = teamService.getTeamByTeamName(joinTeamDTO.teamName());
+        TeamDTO dto = teamService.getTeamByTeamName(joinTeamDTO.teamName());
 
         if (joinTeamDTO.teamName() == null || joinTeamDTO.teamName().equals("")) {
             errors.rejectValue("teamName", "team.notFilledIn", "Team name is required");
@@ -36,6 +34,6 @@ public class JoinTeamValidator implements Validator {
 
         if ( joinTeamDTO.inviteCode() == null || !dto.inviteCode().equals(joinTeamDTO.inviteCode())) {
             errors.rejectValue("inviteCode", "inviteCode.invalid", "Invite code is incorrect");
-        }
+        }*/
     }
 }

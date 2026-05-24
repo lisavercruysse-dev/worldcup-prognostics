@@ -1,7 +1,11 @@
 package com.example.teampredictionworldcup.controller;
 
 import com.example.teampredictionworldcup.dto.response.JoinTeamInputDTO;
+import com.example.teampredictionworldcup.dto.response.MemberDTO;
+import com.example.teampredictionworldcup.dto.response.TeamDTO;
 import com.example.teampredictionworldcup.dto.response.TeamInputDTO;
+import com.example.teampredictionworldcup.model.Member;
+import com.example.teampredictionworldcup.model.Team;
 import com.example.teampredictionworldcup.service.MemberService;
 import com.example.teampredictionworldcup.service.TeamService;
 import com.example.teampredictionworldcup.validator.JoinTeamValidator;
@@ -20,23 +24,18 @@ public class TeamController {
     private final TeamService teamService;
     private final MemberService memberService;
 
-    @GetMapping("/{memberId}/{teamName}")
-    public String showTeamOverview(@PathVariable String teamName, @PathVariable int memberId, Model model) {
-        model.addAttribute("team", teamService.getTeamByTeamName(teamName));
-        model.addAttribute("member", memberService.getMemberById(memberId));
-        return "team-overview";
-    }
-
     @GetMapping("/{memberId}")
-    public String showTeamOverviewNoTeam(@PathVariable int memberId, Model model) {
-        model.addAttribute("member", memberService.getMemberById(memberId));
-        return "team-overview";
-    }
+    public String showTeamOverview(@PathVariable int memberId, Model model) {
+        String teamName = memberService.getMemberById(memberId).team();
+        if (teamName != null) {
+            model.addAttribute("members", memberService.getMembersFromTeam(teamName));
+            model.addAttribute("team", teamService.getTeamFromMember(memberId));
+        } else {
+            model.addAttribute("team", null);
+            model.addAttribute("members", null);
+        }
 
-    @GetMapping("/leaderboard")
-    public String showLeaderboard(Model model) {
-        model.addAttribute("teams", teamService.getTopTenTeams());
-        return "leaderboard";
+        return "team-overview";
     }
 
     @GetMapping("/{memberId}/create")
@@ -52,29 +51,40 @@ public class TeamController {
         return "joinTeamForm";
     }
 
-    @PostMapping("/{memberId}/{teamName}/invite")
-    public String generateInviteCode(@PathVariable String teamName, @PathVariable int memberId) {
-        teamService.genereateInviteCode(teamName);
-        return "redirect:/teams/" + memberId + "/" + teamName;
+    @GetMapping("/leaderboard")
+    public String showLeaderboard(Model model) {
+        model.addAttribute("teams", teamService.getTopTenTeams());
+        return "leaderboard";
     }
 
     @PostMapping
-    public String makeTeam(@Valid TeamInputDTO teamInputDTO, BindingResult bindingResult, Model model) {
+    public String makeTeam(@Valid TeamInputDTO teamInputDTO, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            model.addAttribute("teamInputDTO", teamInputDTO);
-            return "createTeamForm";
+            return "redirect:/teams/" + teamInputDTO.ownerId() + "/create";
         }
         teamService.save(teamInputDTO);
-        return "redirect:/teams/" + teamInputDTO.ownerId() + "/" + teamInputDTO.teamName();
+        return "redirect:/teams/" + teamInputDTO.ownerId();
+    }
+
+    @PostMapping("/{teamName}/invite")
+    public String generateInviteCode(@PathVariable String teamName) {
+        teamService.genereateInviteCode(teamName);
+        return "redirect:/teams/" + 1;
     }
 
     @PostMapping("/members")
-    public String addMember(@Valid JoinTeamInputDTO joinTeamInputDTO, BindingResult bindingResult, Model model) {
+    public String addMember(@Valid JoinTeamInputDTO joinTeamInputDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "joinTeamForm";
         }
 
         teamService.addMember(joinTeamInputDTO);
-        return "redirect:/teams/" + joinTeamInputDTO.memberId() + "/" + joinTeamInputDTO.teamName();
+        return "redirect:/teams/" + joinTeamInputDTO.memberId();
+    }
+
+    @PostMapping("/{teamName}/members/{memberId}/{ownerId}")
+    public String removeMember(@PathVariable Integer memberId, @PathVariable Integer ownerId, @PathVariable String teamName) {
+        teamService.removeMember(memberId, teamName);
+        return "redirect:/teams/" + ownerId;
     }
 }

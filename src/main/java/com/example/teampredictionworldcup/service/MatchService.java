@@ -23,25 +23,41 @@ public class MatchService {
     private final MatchRepository matchRepository;
     private final StadiumRepository stadiumRepository;
 
+    private static MatchDTO toDTO(Match m){
+        return new MatchDTO(m.getId(), m.getDate(), m.getStadium().getCity(), m.getStadium().getStadiumCode(), m.getStadium().getName(),
+                m.getCountryA(), m.getCountryB(), m.getStartTime(), m.getEndTime(), m.getScoreA(), m.getScoreB());
+    }
+
     public List<MatchDTO> getAllMatches(){
         List<Match> matches = matchRepository.findAll(Sort.by(Sort.Direction.ASC, "date"));
-        return matches.stream().map(m ->
-                new MatchDTO(m.getId(), m.getDate(), new StadiumDTO(m.getStadium().getName(),
-                        m.getStadium().getCity(), m.getStadium().getStadiumCode(), m.getStadium().getChecksum(), m.getStadium().getCapacity()), m.getCountryA(), m.getCountryB(), m.getStartTime(), m.getEndTime(), m.getScoreA(), m.getScoreB())).toList();
+        return matches.stream().map(MatchService::toDTO).toList();
     }
 
     public MatchDTO getMatchById(int id){
         Match match = matchRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Match not found with id: " + id));
-        return new MatchDTO(match.getId(), match.getDate(),
-                    new StadiumDTO(match.getStadium().getName(), match.getStadium().getCity(), match.getStadium().getStadiumCode(), match.getStadium().getChecksum(), match.getStadium().getCapacity()),
-                    match.getCountryA(), match.getCountryB(), match.getStartTime(), match.getEndTime(), match.getScoreA(), match.getScoreB());
+        return toDTO(match);
     }
 
     public void save(MatchInputDTO dto) {
-        Stadium stadium = stadiumRepository.findById(dto.id()).orElseThrow(() -> new IllegalArgumentException("Stadium not found with id: " + dto.id()));
-        Match newMatch = new Match(dto.countryA(), dto.countryB(), dto.date(), stadium, dto.starttime(), dto.endtime());
-        matchRepository.save(newMatch);
+        Match match = (dto.id() != null)
+                ? matchRepository.findById(dto.id()).orElse(null)
+                : null;
+
+        Stadium stadium = stadiumRepository.findById(dto.stadiumCode()).orElseThrow(() -> new IllegalArgumentException("Stadium not found with id: " + dto.id()));
+
+        if (match == null) {
+            Match newMatch = new Match(dto.countryA(), dto.countryB(), dto.date(), stadium, dto.starttime(), dto.endtime());
+            matchRepository.save(newMatch);
+        } else {
+            match.setStadium(stadium);
+            match.setDate(dto.date());
+            match.setCountryA(dto.countryA());
+            match.setCountryB(dto.countryB());
+            match.setStartTime(dto.starttime());
+            match.setEndTime(dto.endtime());
+            matchRepository.save(match);
+        }
     }
 
     public void saveScore(ScoreDTO dto) {

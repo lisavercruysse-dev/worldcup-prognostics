@@ -22,7 +22,7 @@ public class StadiumService {
 
     public List<StadiumDTO> getAllStadiums() {
         List<Stadium> stadiums = stadiumRepository.findAll();
-        return stadiums.stream().map(s -> new StadiumDTO(s.getName(), s.getCity(), s.getStadiumCode(), s.getChecksum(), s.getCapacity())).toList();
+        return stadiums.stream().map(s -> new StadiumDTO(s.getStadiumCode(), s.getName(), s.getCity(), s.getStadiumCode(), s.getChecksum(), s.getCapacity())).toList();
     }
 
     public void save(StadiumInputDTO dto) {

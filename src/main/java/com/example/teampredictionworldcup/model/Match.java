@@ -15,11 +15,12 @@ import java.util.Date;
 @Table(name = "matches")
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
+@Getter @Setter
 public class Match {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private int id;
 
     @NotNull
@@ -45,10 +46,8 @@ public class Match {
     @Pattern(regexp = "^[a-zA-Z]+")
     private String countryB;
 
-    @Setter
     private Integer scoreA;
 
-    @Setter
     private Integer scoreB;
 
     public Match(String countryA, String countryB, LocalDate date, Stadium stadium, LocalTime startTime, LocalTime endTime) {

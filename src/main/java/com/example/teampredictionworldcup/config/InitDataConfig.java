@@ -44,7 +44,7 @@ public class InitDataConfig implements CommandLineRunner {
 
         Member bert = new Member("Bert");
 
-        memberRepository.saveAll(List.of(jan, piet, hannah, sam, lilly, tom, luca, pieter, katrien));
+        memberRepository.saveAll(List.of(jan, piet, hannah, sam, lilly, tom, luca, pieter, katrien, bert));
 
         Team teamA = new Team("TeamA", jan);
         Team teamB = new Team("TeamB", piet);
@@ -95,7 +95,11 @@ public class InitDataConfig implements CommandLineRunner {
                 LocalDate.of(2026, 4, 25),
                 s5, LocalTime.of(18, 0),  LocalTime.of(20, 0));
 
-        matchRepository.saveAll(List.of(m1, m2, m3, m4, m5, m6));
+        Match m7 = new Match("Netherlands", "Belgium",
+                LocalDate.of(2026, 5, 23),
+                s5, LocalTime.of(17, 38),  LocalTime.of(20, 0));
+
+        matchRepository.saveAll(List.of(m1, m2, m3, m4, m5, m6, m7));
 
         Prognostic p1 = new Prognostic(m1, piet, 1, 2);
         Prognostic p2 = new Prognostic(m1, jan, 2, 1);

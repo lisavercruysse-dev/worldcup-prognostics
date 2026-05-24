@@ -49,14 +49,14 @@
 
             <p>
                 <label>Stadium</label>
-                <select th:field="*{stadium}">
-                    <option value="default">Select a stadium</option>
+                <select th:field="*{stadiumCode}">
+                    <option value="">Select a stadium</option>
                     <option th:each="stadium : ${stadiums}"
-                            th:value="|${stadium.name}: ${stadium.city}|"
+                            th:value="${stadium.id}"
                             th:text="|${stadium.name} (${stadium.city})|">
                     </option>
                 </select>
-                <span th:if="${#fields.hasErrors('stadium')}" th:errorclass="error" th:errors="*{stadium}"></span>
+                <span th:if="${#fields.hasErrors('stadiumCode')}" th:errorclass="error" th:errors="*{stadiumCode}"></span>
             </p>
 
             <input type="hidden" th:field="*{id}"/>

@@ -11,12 +11,18 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
     private final TeamRepository teamRepository;
+
+    private static MemberDTO toDTO(Member m) {
+        return new MemberDTO(m.getId(), m.getName(), m.getTeam().getTeamName(), m.getScore());
+    }
 
     public MemberDTO getMemberById(int id) {
         Member member = memberRepository.findById(id).orElse(null);
@@ -26,6 +32,11 @@ public class MemberService {
             return new MemberDTO(member.getId(), member.getName(),teamName, member.getScore());
         }
         return null;
+    }
+
+    public List<MemberDTO> getMembersFromTeam(String teamName) {
+        List<Member> members = memberRepository.findByTeamTeamName(teamName);
+        return members.stream().map(MemberService::toDTO).toList();
     }
 }
 
