@@ -12,12 +12,14 @@
             <tr>
                 <th>name</th>
                 <th>score</th>
+                <th>Size</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="team : ${teams}" >
                 <td th:text="${team.teamName}"></td>
                 <td th:text="${team.score}"></td>
+                <td th:text="${team.memberCount}"></td>
             </tr>
         </tbody>
     </table>

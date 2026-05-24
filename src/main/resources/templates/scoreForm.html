@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Score Form</title>
+</head>
+<body>
+    <h1 th:text="|Score match: ${match.countryA} vs. ${match.countryB} (${match.date})|"></h1>
+
+    <form th:action="@{/matches/{matchId}/score(matchId=${match.id})}" th:object="${scoreDTO}" method="post">
+
+        <label th:text="${match.countryA}"></label>
+        <input type="number" th:field="*{scoreTeamA}" min="0" required/><br/>
+
+        <label th:text="${match.countryB}"></label>
+        <input type="number" th:field="*{scoreTeamB}" min="0" required/><br/>
+
+        <input type="hidden" th:field="*{matchId}"/>
+
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>

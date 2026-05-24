@@ -44,7 +44,7 @@ public class InitDataConfig implements CommandLineRunner {
 
         Member bert = new Member("Bert");
 
-        memberRepository.saveAll(List.of(jan, piet, hannah, sam, lilly, tom, luca, pieter, katrien));
+        memberRepository.saveAll(List.of(jan, piet, hannah, sam, lilly, tom, luca, pieter, katrien, bert));
 
         Team teamA = new Team("TeamA", jan);
         Team teamB = new Team("TeamB", piet);
@@ -63,16 +63,16 @@ public class InitDataConfig implements CommandLineRunner {
 
         memberRepository.saveAll(List.of(sam, lilly, tom, luca, pieter, katrien, bert));
 
-        Stadium s1 = new Stadium(1001, "National Arena", "London");
-        Stadium s2 = new Stadium(1002, "Olympic Stadium", "Paris");
-        Stadium s3 = new Stadium(1003, "Victory Stadium", "Madrid");
-        Stadium s4 = new Stadium(1004, "Grand Arena", "Rome");
-        Stadium s5 = new Stadium(1005, "Sunshine Park", "Lisbon");
+        Stadium s1 = new Stadium(1001, "National Arena", "London", 50000);
+        Stadium s2 = new Stadium(1002, "Olympic Stadium", "Paris", 60000);
+        Stadium s3 = new Stadium(1003, "Victory Stadium", "Madrid", 90000);
+        Stadium s4 = new Stadium(1004, "Grand Arena", "Rome", 45000);
+        Stadium s5 = new Stadium(1005, "Sunshine Park", "Lisbon", 50000);
 
         stadiumRepository.saveAll(List.of(s1, s2, s3, s4, s5));
 
         Match m1 = new Match("Brazil", "Argentina",
-                LocalDate.of(2026, 6, 8),
+                LocalDate.of(2026, 3, 8),
                 s1, LocalTime.of(18, 0), LocalTime.of(20, 0));
 
         Match m2 = new Match("France", "Germany",
@@ -95,12 +95,16 @@ public class InitDataConfig implements CommandLineRunner {
                 LocalDate.of(2026, 4, 25),
                 s5, LocalTime.of(18, 0),  LocalTime.of(20, 0));
 
-        matchRepository.saveAll(List.of(m1, m2, m3, m4, m5, m6));
+        Match m7 = new Match("Netherlands", "Belgium",
+                LocalDate.of(2026, 5, 23),
+                s5, LocalTime.of(17, 38),  LocalTime.of(20, 0));
 
-        Prognostic p1 = new Prognostic(m1, piet, 1, 2);
-        Prognostic p2 = new Prognostic(m1, jan, 2, 1);
+        matchRepository.saveAll(List.of(m1, m2, m3, m4, m5, m6, m7));
+
+        Prognostic p1 = new Prognostic(m1, piet, 1, 1);
+        Prognostic p2 = new Prognostic(m1, jan, 0, 1);
         Prognostic p3 = new Prognostic(m1, hannah, 0, 0);
-        Prognostic p4 = new Prognostic(m1, sam, 3, 1);
+        Prognostic p4 = new Prognostic(m1, sam, 2, 2);
         Prognostic p5 = new Prognostic(m1, tom, 1, 1);
 
         prognosticRepository.saveAll(List.of(p1, p2, p3, p4, p5));

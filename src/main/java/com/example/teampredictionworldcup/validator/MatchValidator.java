@@ -29,19 +29,17 @@ public class MatchValidator implements Validator {
         MatchInputDTO dto = (MatchInputDTO) target;
         LocalDate today = LocalDate.now();
 
-        if (dto.stadiumCode() != null) {
-            if (dto.stadiumCode() % 97 != dto.checksum()) {
-                errors.rejectValue("stadiumCode", "stadiumcode.incorrect","Stadium code is incorrect.");
-            }
-        }
-
         if (matches.stream().anyMatch(m ->
-                m.id() != dto.id() &&
+                (dto.id() == null || m.id() != dto.id()) &&
                 m.date().equals(dto.date()) &&
-                m.stadium().stadiumCode().equals(dto.stadiumCode()) &&
+                m.stadiumId().equals(dto.stadiumCode()) &&
                 m.startTime().isBefore(dto.endtime()) &&
                 dto.starttime().isBefore(m.endTime()))) {
             errors.rejectValue("starttime", "startTime.notAvailable", "A match is already scheduled in this stadium during this time.");
+        }
+
+        if (dto.endtime().isBefore(dto.starttime())) {
+            errors.rejectValue("starttime", "startTime.startTimeAfterEndTime", "Start time cannot be after end time.");
         }
 
         if (dto.date().isBefore(today)) {

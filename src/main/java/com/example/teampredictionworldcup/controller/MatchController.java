@@ -2,8 +2,12 @@ package com.example.teampredictionworldcup.controller;
 
 import com.example.teampredictionworldcup.dto.response.MatchDTO;
 import com.example.teampredictionworldcup.dto.response.MatchInputDTO;
+import com.example.teampredictionworldcup.dto.response.ScoreDTO;
+import com.example.teampredictionworldcup.dto.response.StadiumDTO;
+import com.example.teampredictionworldcup.model.Stadium;
 import com.example.teampredictionworldcup.service.MatchService;
 import com.example.teampredictionworldcup.service.PrognosticService;
+import com.example.teampredictionworldcup.service.StadiumService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -11,7 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,47 +25,71 @@ import java.time.LocalDateTime;
 public class MatchController {
     private final PrognosticService prognosticService;
     private final MatchService matchService;
+    private final StadiumService stadiumService;
 
     @GetMapping("/{matchId}/{memberId}")
     public String getMatchById(@PathVariable int matchId, @PathVariable int memberId, Model model) {
-        LocalDateTime now = LocalDateTime.now();
-        model.addAttribute("match", matchService.getMatchById(matchId));
+        MatchDTO matchDTO = matchService.getMatchById(matchId);
+        boolean canEdit = LocalDateTime.now().isBefore(LocalDateTime.of(matchDTO.date(), matchDTO.startTime()).minusMinutes(60));
+        model.addAttribute("match", matchDTO);
         model.addAttribute("prognostic", prognosticService.getByMatchAndMemberId(matchId, memberId));
-        model.addAttribute("now", now);
+        model.addAttribute("canEdit", canEdit);
         return "match";
     }
 
     @GetMapping
     public String manageMatches(Model model) {
         model.addAttribute("matches", matchService.getAllMatches());
+        model.addAttribute("now",  LocalDate.now());
         return "manageMatches";
     }
 
-    @GetMapping("/form/{matchId}")
+   @GetMapping("/form/{matchId}")
     public String showForm(@PathVariable int matchId, Model model) {
         MatchDTO match = matchService.getMatchById(matchId);
+        List<StadiumDTO> stadiums = stadiumService.getAllStadiums();
+        Stadium stadium = stadiumService.getById(match.stadiumId());
 
-        MatchInputDTO inputDTO = match != null
-                ? new MatchInputDTO(match.id(), match.countryA(), match.countryB(), match.date(), match.startTime(), match.endTime(), match.stadium().stadiumCode(), match.stadium().checksum(), match.stadium().name(), match.stadium().city())
-                : new MatchInputDTO(null, null, null, null, null, null,0, 0, null, null);
+        MatchInputDTO inputDTO = new MatchInputDTO(match.id(), match.countryA(), match.countryB(), match.date(), match.startTime(), match.endTime(), stadium.getStadiumCode());
 
         model.addAttribute("matchInputDTO", inputDTO);
         model.addAttribute("isEdit", true);
+        model.addAttribute("stadiums", stadiums);
         return "matchForm";
     }
 
     @GetMapping("/form")
     public String showForm(MatchInputDTO matchInputDTO, Model model) {
+        List<StadiumDTO> stadiums = stadiumService.getAllStadiums();
         model.addAttribute("isEdit", false);
+        model.addAttribute("stadiums", stadiums);
         return "matchForm";
     }
 
     @PostMapping
-    public String saveMatch(@Valid MatchInputDTO matchInputDTO, BindingResult bindingResult) {
+    public String saveMatch(@Valid MatchInputDTO matchInputDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("stadiums", stadiumService.getAllStadiums());
             return "matchForm";
         }
         matchService.save(matchInputDTO);
+        return "redirect:/matches";
+    }
+
+    @GetMapping("/{matchId}/score")
+    public String showScoreForm(@PathVariable int matchId, Model model) {
+        model.addAttribute("match", matchService.getMatchById(matchId));
+        ScoreDTO scoreDTO = new ScoreDTO(null, null, matchId);
+        model.addAttribute("scoreDTO", scoreDTO);
+        return "scoreForm";
+    }
+
+    @PostMapping("/{matchId}/score")
+    public String saveScore(@Valid ScoreDTO scoreInputDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "scoreForm";
+        }
+        matchService.saveScore(scoreInputDTO);
         return "redirect:/matches";
     }
 }

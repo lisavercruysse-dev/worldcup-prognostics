@@ -19,26 +19,23 @@ public class TeamService {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
+    private static TeamDTO toDTO(Team t) {
+        return new TeamDTO(t.getTeamName(), t.getInviteCode(), t.getOwner().getName(), t.getScore(), t.getMembers().size());
+    }
+
+    public TeamDTO getTeamFromMember(int memberId) {
+        return toDTO(teamRepository.findByMembersId(memberId));
+    }
+
     public List<TeamMinimalDTO> getAllTeams() {
         List<Team> lijstTeams = teamRepository.findAll();
         return lijstTeams.stream().map(t -> new TeamMinimalDTO(t.getTeamName(), t.getScore(), t.getMembers().size())).toList();
     }
 
-    public TeamOverviewDTO getTeamByTeamName(String teamName) {
-        Team team = teamRepository.findById(teamName).orElse(null);
-        if (team != null) {
-            return new TeamOverviewDTO(team.getTeamName(), team.getInviteCode(),team.getOwner().getName(),
-                    team.getMembers().stream()
-                            .map(m -> new MemberMinimalDTO(m.getName(), m.getScore()))
-                            .toList(), team.getScore());
-        }
-        return null;
-    }
-
-    public List<TeamMinimalDTO> getTopTenTeams() {
+    public List<TeamDTO> getTopTenTeams() {
         List<Team> teams = teamRepository.findTop10ByOrderByScoreDesc();
 
-        return teams.stream().map(t -> new TeamMinimalDTO(t.getTeamName(), t.getScore(), t.getMembers().size())).toList();
+        return teams.stream().map(TeamService::toDTO).toList();
     }
 
     public void genereateInviteCode(String teamName) {
@@ -63,6 +60,15 @@ public class TeamService {
         Team team = teamRepository.findById(joinTeamInputDTO.teamName()).orElse(null);
         if (member != null && team != null) {
             team.addMember(member);
+            teamRepository.save(team);
+        }
+    }
+
+    public void removeMember(Integer memberId, String teamName) {
+        Member member = memberRepository.findById(memberId).orElse(null);
+        Team team = teamRepository.findById(teamName).orElse(null);
+        if (member != null && team != null) {
+            team.removeMember(member);
             teamRepository.save(team);
         }
     }

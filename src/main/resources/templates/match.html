@@ -7,36 +7,40 @@
 <body>
 
 <h1 th:text="'Teams: ' + ${match.countryA} + ' vs ' + ${match.countryB}"></h1>
-<p th:text="'Location: ' + ${match.stadium.name} + ', ' + ${match.stadium.city}"></p>
+<p th:text="'Location: ' + ${match.stadiumName} + ', ' + ${match.stadiumCity}"></p>
 <p th:text="'Date: ' + ${match.date}"></p>
 <p th:text="'Time: ' + ${match.startTime} + ' - ' + ${match.endTime}"></p>
 
 <h2>Final Score</h2>
-<p>To Be Implemented</p>
+<div th:if="${match.scoreA != null}">
+    <p th:text="|${match.scoreA} - ${match.scoreB}|"></p>
+</div>
+<div th:if="${match.scoreA == null}">
+    <p>This match has not been played yet</p>
+</div>
 
 <h2>Your Prognostic</h2>
 <div th:if="${prognostic == null}">
     <p>No prognostic yet for this match.</p>
-    <div th:if="!${match.date}">
+    <div th:if="${canEdit}">
         <a th:href="@{/prognostics/form/{matchId}/{memberId}(matchId=${match.id}, memberId=${memberId})}">
             <button>
                 Add Prognostic
             </button>
         </a>
     </div>
-</div>
-<div th:if="${prognostic != null}">
-    <p th:text="'Goals ' + ${match.countryA} + ': ' + ${prognostic.goalsTeamA}"></p>
-    <p th:text="'Goals ' + ${match.countryB} + ': ' + ${prognostic.goalsTeamB}"></p>
+ </div>
+ <div th:if="${prognostic != null}">
+     <p th:text="'Goals ' + ${match.countryA} + ': ' + ${prognostic.goalsTeamA}"></p>
+     <p th:text="'Goals ' + ${match.countryB} + ': ' + ${prognostic.goalsTeamB}"></p>
 
-    <div th:if="${!match.date}">
-        <a th:href="@{/prognostics/form/{matchId}/{memberId}(matchId=${match.id}, memberId=${memberId})}">
-            <button>
-                Edit
-            </button>
-        </a>
+     <div th:if="${canEdit}">-->
+         <a th:href="@{/prognostics/form/{matchId}/{memberId}(matchId=${match.id}, memberId=${memberId})}">
+             <button>
+                 Edit
+             </button>
+         </a>
     </div>
-</div>
-
-</body>
-</html>
+ </div>
+  </body>
+  </html>

@@ -33,11 +33,14 @@ public class Stadium {
 
     private int checksum;
 
-    public Stadium(int stadiumCode, String name, String city) {
+    private int capacity;
+
+    public Stadium(int stadiumCode, String name, String city, int capacity) {
         this.stadiumCode = stadiumCode;
         this.name = name;
         this.city = city;
         this.checksum = stadiumCode % 97;
+        this.capacity = capacity;
     }
 
 }
