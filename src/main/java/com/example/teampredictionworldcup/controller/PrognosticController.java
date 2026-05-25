@@ -1,37 +1,52 @@
 package com.example.teampredictionworldcup.controller;
 
 import com.example.teampredictionworldcup.dto.response.MatchMinimalDTO;
+import com.example.teampredictionworldcup.dto.response.MemberDTO;
 import com.example.teampredictionworldcup.dto.response.PrognosticDTO;
 import com.example.teampredictionworldcup.dto.response.PrognosticInputDTO;
 import com.example.teampredictionworldcup.model.Prognostic;
+import com.example.teampredictionworldcup.repository.MemberRepository;
 import com.example.teampredictionworldcup.service.MatchService;
+import com.example.teampredictionworldcup.service.MemberService;
 import com.example.teampredictionworldcup.service.PrognosticService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/prognostics")
 public class PrognosticController {
     private final PrognosticService prognosticService;
+    private final MemberService memberService;
 
-    @GetMapping("/form/{matchId}/{memberId}")
-    public String showForm(@PathVariable int matchId, @PathVariable int memberId, Model model) {
-        PrognosticDTO prognostic = prognosticService.getByMatchAndMemberId(matchId, memberId);
+    @GetMapping("/form/{matchId}")
+    public String showForm(@PathVariable int matchId, Principal principal, Model model) {
+        MemberDTO member = null;
+        PrognosticDTO prognostic = null;
+        if (principal != null) {
+            member = memberService.getMemberByName(principal.getName());
+            prognostic = prognosticService.getByMatchAndMemberId(matchId, member.id());
+        }
 
         PrognosticInputDTO inputDTO = prognostic != null
-                ? new PrognosticInputDTO(prognostic.goalsTeamA(), prognostic.goalsTeamB(), matchId, memberId)
-                : new PrognosticInputDTO(null, null, matchId, memberId);
+                ? new PrognosticInputDTO(prognostic.goalsTeamA(), prognostic.goalsTeamB(), matchId, member.id())
+                : new PrognosticInputDTO(null, null, matchId, member.id());
 
         model.addAttribute("inputDTO", inputDTO);
         return "prognosticForm";
     }
 
-    @GetMapping("/user/{userId}")
-    public String showPrognosticsForUser(@PathVariable int userId, Model model) {
-        model.addAttribute("prognostics", prognosticService.getByUserId(userId));
+    @GetMapping()
+    public String showPrognosticsForUser(Principal principal, Model model) {
+        MemberDTO member = null;
+        if (principal != null) {
+            member = memberService.getMemberByName(principal.getName());
+        }
+        model.addAttribute("prognostics", prognosticService.getByUserId(member.id()));
         return "myPrognostics";
     }
 
@@ -39,6 +54,6 @@ public class PrognosticController {
     public String processForm(PrognosticInputDTO inputDTO) {
         prognosticService.save(inputDTO);
         int matchId = inputDTO.matchId();
-        return "redirect:/matches/" + matchId + "/1";
+        return "redirect:/matches/" + matchId;
     }
 }

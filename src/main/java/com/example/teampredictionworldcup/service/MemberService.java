@@ -9,6 +9,7 @@ import com.example.teampredictionworldcup.repository.MemberRepository;
 import com.example.teampredictionworldcup.repository.TeamRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class MemberService {
     private final TeamRepository teamRepository;
 
     private static MemberDTO toDTO(Member m) {
-        return new MemberDTO(m.getId(), m.getName(), m.getTeam().getTeamName(), m.getScore());
+        return new MemberDTO(m.getId(), m.getName(), m.getTeam() != null ? m.getTeam().getTeamName() : null, m.getScore());
     }
 
     public MemberDTO getMemberById(int id) {
@@ -37,6 +38,10 @@ public class MemberService {
     public List<MemberDTO> getMembersFromTeam(String teamName) {
         List<Member> members = memberRepository.findByTeamTeamName(teamName);
         return members.stream().map(MemberService::toDTO).toList();
+    }
+
+    public MemberDTO getMemberByName(String username) {
+        return toDTO(memberRepository.findByName(username).orElseThrow(() -> new UsernameNotFoundException("No username found: %s".formatted(username))));
     }
 }
 
