@@ -22,7 +22,7 @@
                         <td th:text="${m.name}" th:style="${m.name == team.owner} ? 'background-color: lightblue'"></td>
                     <td th:text="${m.score}"></td>
                     <td th:if="${m.name != team.owner}">
-                        <form th:action="@{/teams/{teamName}/members/{memberId}/{ownerId}(memberId=${m.id}, ownerId=${memberId}, teamName=${team.teamName})}" method="post">
+                        <form th:action="@{/teams/{teamName}/members/{memberId}(memberId=${m.id}, teamName=${team.teamName})}" method="post">
                         <button type="submit">delete</button>
                         </form>
                     </td>
@@ -41,10 +41,10 @@
 
     </div>
     <div th:if="${team == null}">
-        <a th:href="@{/teams/{memberId}/create(memberId=${memberId})}">
+        <a th:href="@{/teams/create}">
             Add team
         </a><br/>
-        <a th:href="@{/teams/{memberId}/join(memberId=${memberId})}">
+        <a th:href="@{/teams/join}">
             Join team
         </a>
     </div>

@@ -23,28 +23,32 @@ public class InitDataConfig implements CommandLineRunner {
     private final MatchRepository matchRepository;
     private final PrognosticRepository prognosticRepository;
 
+    private static final String BCRYPTED_PASSWORD = "$2a$12$0ZcT8xPFjOVmewRj.WeILu7VFNYnsUwliliLF5VYiDxHIPMk2vD/.";
+
     @Override
     public void run(String... args) {
 
-        Member jan = new Member("Jan");
-        Member piet  = new Member("Piet");
-        Member hannah = new Member("Hannah");
+        Member jan = new Member("Jan", BCRYPTED_PASSWORD, UserAuthority.USER);
+        Member piet  = new Member("Piet", BCRYPTED_PASSWORD, UserAuthority.USER);
+        Member hannah = new Member("Hannah", BCRYPTED_PASSWORD, UserAuthority.USER);
 
         //Members Team A
-        Member sam = new Member("Sam");
-        Member lilly = new Member("Lilly");
+        Member sam = new Member("Sam", BCRYPTED_PASSWORD, UserAuthority.USER);
+        Member lilly = new Member("Lilly", BCRYPTED_PASSWORD, UserAuthority.USER);
 
         //Members Team B
-        Member tom = new Member("Tom");
-        Member luca = new Member("Luca");
+        Member tom = new Member("Tom", BCRYPTED_PASSWORD, UserAuthority.USER);
+        Member luca = new Member("Luca", BCRYPTED_PASSWORD, UserAuthority.USER);
 
         //Members Team C
-        Member pieter = new Member("Pieter");
-        Member katrien = new Member("Katrien");
+        Member pieter = new Member("Pieter", BCRYPTED_PASSWORD, UserAuthority.USER);
+        Member katrien = new Member("Katrien", BCRYPTED_PASSWORD, UserAuthority.USER);
 
-        Member bert = new Member("Bert");
+        //Other
+        Member bert = new Member("Bert", BCRYPTED_PASSWORD, UserAuthority.USER);
+        Member geert = new Member("Geert", BCRYPTED_PASSWORD, UserAuthority.ADMIN);
 
-        memberRepository.saveAll(List.of(jan, piet, hannah, sam, lilly, tom, luca, pieter, katrien, bert));
+        memberRepository.saveAll(List.of(jan, piet, hannah, sam, lilly, tom, luca, pieter, katrien, bert, geert));
 
         Team teamA = new Team("TeamA", jan);
         Team teamB = new Team("TeamB", piet);

@@ -1,11 +1,9 @@
 package com.example.teampredictionworldcup.controller;
 
-import com.example.teampredictionworldcup.dto.response.MatchDTO;
-import com.example.teampredictionworldcup.dto.response.MatchInputDTO;
-import com.example.teampredictionworldcup.dto.response.ScoreDTO;
-import com.example.teampredictionworldcup.dto.response.StadiumDTO;
+import com.example.teampredictionworldcup.dto.response.*;
 import com.example.teampredictionworldcup.model.Stadium;
 import com.example.teampredictionworldcup.service.MatchService;
+import com.example.teampredictionworldcup.service.MemberService;
 import com.example.teampredictionworldcup.service.PrognosticService;
 import com.example.teampredictionworldcup.service.StadiumService;
 import jakarta.validation.Valid;
@@ -15,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,13 +25,19 @@ public class MatchController {
     private final PrognosticService prognosticService;
     private final MatchService matchService;
     private final StadiumService stadiumService;
+    private final MemberService memberService;
 
-    @GetMapping("/{matchId}/{memberId}")
-    public String getMatchById(@PathVariable int matchId, @PathVariable int memberId, Model model) {
+    @GetMapping("/{matchId}")
+    public String getMatchById(@PathVariable int matchId, Principal principal, Model model) {
         MatchDTO matchDTO = matchService.getMatchById(matchId);
+        MemberDTO member = null;
+        if (principal != null) {
+            member = memberService.getMemberByName(principal.getName());
+        }
+
         boolean canEdit = LocalDateTime.now().isBefore(LocalDateTime.of(matchDTO.date(), matchDTO.startTime()).minusMinutes(60));
         model.addAttribute("match", matchDTO);
-        model.addAttribute("prognostic", prognosticService.getByMatchAndMemberId(matchId, memberId));
+        model.addAttribute("prognostic", member != null? prognosticService.getByMatchAndMemberId(matchId, member.id()) : null);
         model.addAttribute("canEdit", canEdit);
         return "match";
     }
@@ -70,6 +75,7 @@ public class MatchController {
     public String saveMatch(@Valid MatchInputDTO matchInputDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("stadiums", stadiumService.getAllStadiums());
+            model.addAttribute("isEdit", matchInputDTO.id() != null && matchInputDTO.id() != 0);
             return "matchForm";
         }
         matchService.save(matchInputDTO);

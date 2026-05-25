@@ -28,5 +28,8 @@
             </tbody>
         </table>
     </div>
+    <div th:if="${#lists.isEmpty(prognostics)}">
+        <p>No prognostics yet.</p>
+    </div>
 </body>
 </html>
