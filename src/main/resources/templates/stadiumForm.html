@@ -6,7 +6,9 @@
     <link rel="stylesheet" th:href="@{/styles/style.css}">
 </head>
 <body>
-    <h1>Create stadium</h1>
+<div th:replace="fragments/header::header"></div>
+
+    <h2>Create stadium</h2>
 
         <form th:action="@{/stadiums}" th:object="${stadiumInputDTO}" method="post">
             <p>

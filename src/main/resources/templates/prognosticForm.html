@@ -3,21 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>PrognosticForm</title>
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
 </head>
 <body>
-<h1>Prognostics form</h1>
+<div th:replace="fragments/header::header"></div>
+
+<h2 th:text="#{prognosticsForm.title}"></h2>
+
 <form th:action="@{/prognostics}" th:object="${inputDTO}" method="post">
 
     <label>Goals Team A</label>
-    <input type="number" th:field="*{goalsTeamA}" min="0" required/>
+    <input type="number" th:field="*{goalsTeamA}"/>
+    <span th:if="${#fields.hasErrors('goalsTeamA')}" th:errorclass="error" th:errors="*{goalsTeamA}"></span>
     <br/>
     <label>Goals Team A</label>
-    <input type="number" th:field="*{goalsTeamB}" min="0" required/>
+    <input type="number" th:field="*{goalsTeamB}"/>
+    <span th:if="${#fields.hasErrors('goalsTeamB')}" th:errorclass="error" th:errors="*{goalsTeamB}"></span>
 
     <input type="hidden" th:field="*{matchId}"/>
     <input type="hidden" th:field="*{memberId}" />
 
-    <button type="submit">Submit</button>
+    <button type="submit" th:text="#{general.submitBtn}">Submit</button>
 </form>
 </body>
 </html>

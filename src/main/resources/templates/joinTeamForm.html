@@ -6,7 +6,9 @@
     <link rel="stylesheet" th:href="@{/styles/style.css}">
 </head>
 <body>
-    <h1>Join Team</h1>
+<div th:replace="fragments/header::header"></div>
+
+    <h2>Join Team</h2>
     <form th:action="@{/teams/members}" th:object="${joinTeamInputDTO}" method="post">
         <p>
             <label>Team Name</label>

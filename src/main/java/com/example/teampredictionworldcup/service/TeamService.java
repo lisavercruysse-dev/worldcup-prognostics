@@ -38,6 +38,14 @@ public class TeamService {
         return teams.stream().map(TeamService::toDTO).toList();
     }
 
+    public TeamDTO getTeamByName(String teamName) {
+        Team team = teamRepository.findTeamByTeamName(teamName).orElse(null);
+        if (team != null) {
+            return toDTO(team);
+        }
+        else return null;
+    }
+
     public void genereateInviteCode(String teamName) {
         Team team = teamRepository.findById(teamName).orElse(null);
         if(team != null) {

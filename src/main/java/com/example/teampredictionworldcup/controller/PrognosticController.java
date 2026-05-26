@@ -9,9 +9,11 @@ import com.example.teampredictionworldcup.repository.MemberRepository;
 import com.example.teampredictionworldcup.service.MatchService;
 import com.example.teampredictionworldcup.service.MemberService;
 import com.example.teampredictionworldcup.service.PrognosticService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -51,9 +53,12 @@ public class PrognosticController {
     }
 
     @PostMapping
-    public String processForm(PrognosticInputDTO inputDTO) {
+    public String processForm(@Valid @ModelAttribute("inputDTO") PrognosticInputDTO inputDTO, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "prognosticForm";
+        }
+
         prognosticService.save(inputDTO);
-        int matchId = inputDTO.matchId();
-        return "redirect:/matches/" + matchId;
+        return "redirect:/matches/" + inputDTO.matchId();
     }
 }

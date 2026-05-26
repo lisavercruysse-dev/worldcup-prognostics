@@ -6,7 +6,9 @@
     <link rel="stylesheet" th:href="@{/styles/style.css}">
 </head>
 <body>
-    <h1 th:text="${isEdit} ? 'Edit match' : 'Create match'"></h1>
+<div th:replace="fragments/header::header"></div>
+
+    <h2 th:text="${isEdit} ? 'Edit match' : 'Create match'"></h2>
         <form th:action="@{/matches}" th:object="${matchInputDTO}" method="post">
             <p>
                 <label>Country A</label>

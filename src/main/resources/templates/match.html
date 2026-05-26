@@ -3,43 +3,45 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Match</title>
+    <title th:text="#{matchDetails.pageTitle}"></title>
 </head>
 <body>
+<div th:replace="fragments/header::header"></div>
 
-<h1 th:text="'Teams: ' + ${match.countryA} + ' vs ' + ${match.countryB}"></h1>
-<p th:text="'Location: ' + ${match.stadiumName} + ', ' + ${match.stadiumCity}"></p>
-<p th:text="'Date: ' + ${match.date}"></p>
-<p th:text="'Time: ' + ${match.startTime} + ' - ' + ${match.endTime}"></p>
+<h2 th:text="#{matchDetails.title}"></h2>
+<h3 th:text="|#{matchDetails.teams} ${match.countryA} #{matchDetails.vs} ${match.countryB}|"></h3>
+<p th:text="|#{matchDetails.location} ${match.stadiumName} , ${match.stadiumCity}|"></p>
+<p th:with="df=#{date.format.pattern}" th:text="|#{matchDetails.date} ${#temporals.format(match.date, df)}|"></p>
+<p th:text="|#{matchDetails.time} ${match.startTime} - ${match.endTime}|"></p>
 
-<h2>Final Score</h2>
+<h3 th:text="#{matchDetails.finalScoreTitle}"></h3>
 <div th:if="${match.scoreA != null}">
     <p th:text="|${match.scoreA} - ${match.scoreB}|"></p>
 </div>
 <div th:if="${match.scoreA == null}">
-    <p>This match has not been played yet</p>
+    <p th:text="#{matchDetails.finalScoreInfo}"></p>
 </div>
 
 <div sec:authorize="hasRole('USER')" >
-    <h2>Your Prognostic</h2>
+    <h3 th:text="#{matchDetails.prognosticTitle}"></h3>
     <div th:if="${prognostic == null}">
-        <p>No prognostic yet for this match.</p>
+        <p th:text="#{matchDetails.prognosticInfo}"></p>
         <div th:if="${canEdit}">
             <a th:href="@{/prognostics/form/{matchId}(matchId=${match.id})}">
-                <button>
-                    Add Prognostic
+                <button th:text="#{matchDetails.prognosticButton}">
+
                 </button>
             </a>
         </div>
     </div>
     <div th:if="${prognostic != null}">
-        <p th:text="'Goals ' + ${match.countryA} + ': ' + ${prognostic.goalsTeamA}"></p>
-        <p th:text="'Goals ' + ${match.countryB} + ': ' + ${prognostic.goalsTeamB}"></p>
+        <p th:text="|#{matchDetails.goals} ${match.countryA}: ${prognostic.goalsTeamA}|"></p>
+        <p th:text="|#{matchDetails.goals} ${match.countryB}: ${prognostic.goalsTeamB}|"></p>
 
         <div th:if="${canEdit}">
             <a th:href="@{/prognostics/form/{matchId}(matchId=${match.id})}">
-                <button>
-                    Edit
+                <button th:text="#{general.editBtn}">
+
                 </button>
             </a>
         </div>

@@ -20,12 +20,29 @@ public class StadiumValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        StadiumInputDTO dto =  (StadiumInputDTO) target;
+        StadiumInputDTO dto = (StadiumInputDTO) target;
 
-        if (stadiumService.getById(Integer.parseInt(dto.code())) != null) {
+        if (dto.code() == null || dto.code().isBlank()) {
+            return;
+        }
+
+        if (dto.checksum() == null) {
+            return;
+        }
+
+        int code;
+
+        try {
+            code = Integer.parseInt(dto.code());
+        } catch (NumberFormatException e) {
+            errors.rejectValue("code", "invalid.code", "Stadium code is invalid");
+            return;
+        }
+
+        if (stadiumService.getById(code) != null) {
             errors.rejectValue("code", "duplicate.code", "Stadium already exists");
         }
-        else if (Integer.parseInt(dto.code()) % 97 != dto.checksum()) {
+        else if (code % 97 != dto.checksum()) {
             errors.rejectValue("code", "invalid.code", "Stadium code is invalid");
         }
     }
