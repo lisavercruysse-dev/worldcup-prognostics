@@ -18,12 +18,12 @@ public class JoinTeamValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-       /* JoinTeamInputDTO joinTeamDTO = (JoinTeamInputDTO) target;
+       JoinTeamInputDTO joinTeamDTO = (JoinTeamInputDTO) target;
 
-        TeamDTO dto = teamService.getTeamByTeamName(joinTeamDTO.teamName());
+        TeamDTO dto = teamService.getTeamByName(joinTeamDTO.teamName());
 
-        if (joinTeamDTO.teamName() == null || joinTeamDTO.teamName().equals("")) {
-            errors.rejectValue("teamName", "team.notFilledIn", "Team name is required");
+        if (joinTeamDTO.teamName() == null || joinTeamDTO.teamName().isEmpty()) {
+            errors.rejectValue("teamName", "team.nameEmpty", "Team name is required");
             return;
         }
 
@@ -32,8 +32,12 @@ public class JoinTeamValidator implements Validator {
             return;
         }
 
-        if ( joinTeamDTO.inviteCode() == null || !dto.inviteCode().equals(joinTeamDTO.inviteCode())) {
+        if (joinTeamDTO.inviteCode() == null || joinTeamDTO.inviteCode().isEmpty()) {
+            errors.rejectValue("inviteCode", "inviteCode.empty", "Invite code is required");
+        }
+
+        else if (!dto.inviteCode().equals(joinTeamDTO.inviteCode())) {
             errors.rejectValue("inviteCode", "inviteCode.invalid", "Invite code is incorrect");
-        }*/
+        }
     }
 }

@@ -10,24 +10,24 @@ import java.time.LocalTime;
 public record MatchInputDTO(
         Integer id,
 
-        @NotBlank(message = "Country A must be filled in.")
-        @Pattern(regexp =   "^[a-zA-Z]+", message = "Must consist of letters only.")
-        @Size(min = 4, message = "Must be at least 4 letters long")
+        @NotBlank()
+        @Pattern(regexp =   "^[a-zA-Z]+", message = "{validation.country.Pattern.message}")
+        @Size(min = 4, message = "{validation.country.Size.message}")
         String countryA,
 
-        @NotBlank(message = "Country B must be filled in.")
-        @Pattern(regexp =   "^[a-zA-Z]+", message = "Must consist of letters only.")
-        @Size(min = 4, message = "Must be at least 4 letters long.")
+        @NotBlank()
+        @Pattern(regexp =   "^[a-zA-Z]+", message = "{validation.country.Pattern.message}")
+        @Size(min = 4, message = "{validation.country.Size.message}")
         String countryB,
 
         @ValidDate
-        @NotNull(message = "Date must be filled in.")
+        @NotNull()
         LocalDate date,
 
-        @NotNull(message = "Starttime must be filled in.")
+        @NotNull()
         LocalTime starttime,
 
-        @NotNull(message = "Endtime must be filled in.")
+        @NotNull()
         LocalTime endtime,
 
         @NotNull

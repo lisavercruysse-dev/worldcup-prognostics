@@ -29,6 +29,10 @@ public class MatchValidator implements Validator {
         MatchInputDTO dto = (MatchInputDTO) target;
         LocalDate today = LocalDate.now();
 
+        if (dto.date() == null || dto.starttime() == null || dto.endtime() == null) {
+            return;
+        }
+
         if (matches.stream().anyMatch(m ->
                 (dto.id() == null || m.id() != dto.id()) &&
                 m.date().equals(dto.date()) &&

@@ -91,11 +91,18 @@ public class MatchController {
     }
 
     @PostMapping("/{matchId}/score")
-    public String saveScore(@Valid ScoreDTO scoreInputDTO, BindingResult bindingResult) {
+    public String saveScore(
+            @PathVariable int matchId,
+            @Valid @ModelAttribute("scoreDTO") ScoreDTO scoreDTO,
+            BindingResult bindingResult,
+            Model model
+    ) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("match", matchService.getMatchById(matchId));
             return "scoreForm";
         }
-        matchService.saveScore(scoreInputDTO);
+
+        matchService.saveScore(scoreDTO);
         return "redirect:/matches";
     }
 }

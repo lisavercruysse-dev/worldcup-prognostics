@@ -5,8 +5,9 @@
     <title>Prognostics</title>
 </head>
 <body>
+<div th:replace="fragments/header::header"></div>
 
-    <h1>My Prognostics</h1>
+    <h2>My Prognostics</h2>
 
     <div th:each="p : ${prognostics}">
         <h3 th:text="|Prognostics: ${p.match.countryA} VS. ${p.match.countryB}|"></h3>

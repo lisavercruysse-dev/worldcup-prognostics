@@ -5,9 +5,10 @@
     <title>Team</title>
 </head>
 <body>
+<div th:replace="fragments/header::header"></div>
 
     <div th:if="${team != null}">
-        <h1 th:text="${team.teamName}"></h1>
+        <h2 th:text="${team.teamName}"></h2>
 
         <table border="1" cellpadding="8" cellspacing="0">
             <thead>
@@ -21,7 +22,7 @@
                 <tr th:each="m : ${members}">
                         <td th:text="${m.name}" th:style="${m.name == team.owner} ? 'background-color: lightblue'"></td>
                     <td th:text="${m.score}"></td>
-                    <td th:if="${m.name != team.owner}">
+                    <td th:if="${m.name != team.owner and team.owner.equals(#authentication.name)}">
                         <form th:action="@{/teams/{teamName}/members/{memberId}(memberId=${m.id}, teamName=${team.teamName})}" method="post">
                         <button type="submit">delete</button>
                         </form>
@@ -30,14 +31,15 @@
                 <tr th:text="|Totale score: ${team.score}|"></tr>
             </tbody>
         </table>
-        <div th:block th:if="${team.inviteCode == null}">
+        <div th:if="${team.inviteCode == null and team.owner.equals(#authentication.name)}">
             <form th:action="@{/teams/{teamId}/invite(teamId=${team.teamName})}" method="post">
                 <button type="submit">Generate invitecode</button>
             </form>
         </div>
-        <div th:block th:if="${team.inviteCode != null}">
+        <div th:if="${team.inviteCode != null and team.owner.equals(#authentication.name)}">
             <p th:text="${team.inviteCode}"></p>
         </div>
+
 
     </div>
     <div th:if="${team == null}">

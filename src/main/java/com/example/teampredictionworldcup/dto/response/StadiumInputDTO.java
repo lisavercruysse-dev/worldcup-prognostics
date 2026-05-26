@@ -4,24 +4,24 @@ import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.Length;
 
 public record StadiumInputDTO(
-        @NotBlank(message = "Stadiumcode must be filled in.")
-        @Pattern(regexp = "^\\d{4}$", message = "Must consist of numbers only")
-        @Length(min = 4, max = 4)
+        @NotBlank()
+        @Pattern(regexp = "^\\d{4}$", message = "{validation.string.Pattern.numbersOnly}")
+        @Length(min = 4, max = 4, message="{validation.code.length}")
         String code,
 
-        @NotNull(message = "Checksum must be filled in.")
-        @Min(value = 0, message = "Must be at least 0.")
+        @NotNull()
+        @Min(value = 0, message = "{validation.checksum.min}")
         Integer checksum,
 
-        @NotBlank(message = "Stadiumname must be filled in.")
-        @Pattern(regexp =   "^[a-zA-Z ]+", message = "Must consist of letters an spaces only.")
+        @NotBlank()
+        @Pattern(regexp =   "^[a-zA-Z ]+", message = "{validation.string.Pattern.lettersAndSpacesOnly}")
         String name,
 
-        @NotBlank(message = "City must be filled in.")
-        @Pattern(regexp =   "^[a-zA-Z]+", message = "Must consist of letters only.")
+        @NotBlank()
+        @Pattern(regexp =   "^[a-zA-Z]+", message = "{validation.string.Pattern.numbersOnly}")
         String city,
 
         @NotNull
-        @DecimalMin(value = "10000")
-        @DecimalMax(value = "150000")
+        @DecimalMin(value = "10000", message = "{validation.capacity.min}")
+        @DecimalMax(value = "150000", message = "{validation.capacity.max}")
         Integer capacity) {}

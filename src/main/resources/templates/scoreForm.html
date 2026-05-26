@@ -3,17 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Score Form</title>
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
 </head>
 <body>
-    <h1 th:text="|Score match: ${match.countryA} vs. ${match.countryB} (${match.date})|"></h1>
+<div th:replace="fragments/header::header"></div>
+
+    <h2 th:text="|Score match: ${match.countryA} vs. ${match.countryB} (${match.date})|"></h2>
 
     <form th:action="@{/matches/{matchId}/score(matchId=${match.id})}" th:object="${scoreDTO}" method="post">
 
         <label th:text="${match.countryA}"></label>
-        <input type="number" th:field="*{scoreTeamA}" min="0" required/><br/>
+        <input type="number" th:field="*{scoreTeamA}"/><br/>
+        <span th:if="${#fields.hasErrors('scoreTeamA')}" th:errorclass="error" th:errors="*{scoreTeamA}"></span><br/>
 
         <label th:text="${match.countryB}"></label>
-        <input type="number" th:field="*{scoreTeamB}" min="0" required/><br/>
+        <input type="number" th:field="*{scoreTeamB}"/><br/>
+        <span th:if="${#fields.hasErrors('scoreTeamB')}" th:errorclass="error" th:errors="*{scoreTeamB}"></span><br/>
 
         <input type="hidden" th:field="*{matchId}"/>
 
