@@ -17,15 +17,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login**", "/", "/home", "/css/**", "/403**", "/teams/leaderboard/**").permitAll()
+                        .requestMatchers("/login**", "/", "/home", "/css/**", "/403**", "/teams/leaderboard/**", "/api/**").permitAll()
                         .requestMatchers("/matches/form", "/matches/form/**", "/matches/*/score", "/stadiums/**", "/matches").hasRole("ADMIN")
                         .requestMatchers("/matches/*").permitAll()
                         .anyRequest().hasRole("USER"))
                 .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/", true).usernameParameter("username").passwordParameter("password"))
-                .exceptionHandling(ex -> ex.accessDeniedPage("/403"))
+                .exceptionHandling(handling -> handling.accessDeniedPage("/403"))
                 .logout(logout -> logout
                         .logoutUrl("/logout").logoutSuccessUrl("/")
                                 .permitAll());
+
         return http.build();
     }
 

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -127,4 +128,7 @@ public class MatchService {
         }
     }
 
+    public List<Match> getMatchesByDate(LocalDate localDate) {
+        return matchRepository.findByDate(localDate);
+    }
 }
