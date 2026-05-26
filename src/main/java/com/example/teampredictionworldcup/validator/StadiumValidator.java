@@ -9,6 +9,7 @@ import org.springframework.validation.Validator;
 
 @Component("stadiumValidator")
 @RequiredArgsConstructor
+
 public class StadiumValidator implements Validator {
     private final StadiumService stadiumService;
 
