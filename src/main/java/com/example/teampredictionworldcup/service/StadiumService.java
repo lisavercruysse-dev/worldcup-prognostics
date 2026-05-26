@@ -2,6 +2,7 @@ package com.example.teampredictionworldcup.service;
 
 import com.example.teampredictionworldcup.dto.response.StadiumDTO;
 import com.example.teampredictionworldcup.dto.response.StadiumInputDTO;
+import com.example.teampredictionworldcup.exceptions.StadiumNotFoundException;
 import com.example.teampredictionworldcup.model.Stadium;
 import com.example.teampredictionworldcup.repository.StadiumRepository;
 import jakarta.transaction.Transactional;
@@ -29,5 +30,9 @@ public class StadiumService {
         int code = Integer.parseInt(dto.code());
         Stadium stadium = new Stadium(code, dto.name(), dto.city(), dto.capacity());
         stadiumRepository.save(stadium);
+    }
+
+    public Integer getCapacityByStadiumId(int stadiumId) {
+        return stadiumRepository.getCapacityByStadiumId(stadiumId).orElseThrow(() -> new StadiumNotFoundException(stadiumId));
     }
 }

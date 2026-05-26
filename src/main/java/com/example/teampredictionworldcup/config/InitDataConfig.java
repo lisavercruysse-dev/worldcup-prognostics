@@ -92,7 +92,7 @@ public class InitDataConfig implements CommandLineRunner {
                 s4, LocalTime.of(15, 30),  LocalTime.of(17, 30));
 
         Match m5 = new Match("Netherlands", "Belgium",
-                LocalDate.of(2026, 6, 14),
+                LocalDate.of(2026, 6, 13),
                 s5, LocalTime.of(19, 30),  LocalTime.of(21, 30));
 
         Match m6 = new Match("Netherlands", "Belgium",
