@@ -1,6 +1,6 @@
 # worldcup prognostics
-This is a **school assignment** where I applied my knowledge from classes to build a **Spring Boot Web Application**.
-The focus is on **backend architecture, REST API design, and reactive WebClient integration**, rather than frontend styling.
+This is a school assignment where I applied my knowledge from classes to build a Spring Boot Web Application.
+The focus is on backend design so this is a raw HTML web app without any styling.
 
 ## Features
 - Create and join teams using an invite code
@@ -20,7 +20,7 @@ The focus is on **backend architecture, REST API design, and reactive WebClient 
 - Thymeleaf
 
 ## Purpose
-- Learn backend architecture and REST API design using Spring Boot
+- Learn backend architecture and some REST API design using Spring Boot
 - Practice JPA entity relationships and database operations
 - Understand how to structure a Spring Boot application for maintainability
 
